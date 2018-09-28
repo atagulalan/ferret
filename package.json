@@ -1,0 +1,16 @@
+{
+  "name": "ferret",
+  "version": "1.0.0",
+  "description": "Simple mouse mover",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "atagulalan",
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "express": "^4.16.3",
+    "socketio": "^1.0.0"
+  }
+}
