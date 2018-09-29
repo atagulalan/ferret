@@ -4,7 +4,7 @@ const express = require('express');
 const socketIO = require("socket.io");
 const path = require("path");
 
-const PORT = process.env.PORT || 4544;
+const PORT = process.env.PORT || 4540;
 const INDEX = path.join(__dirname, './public');
 const DEBUG = true;
 
