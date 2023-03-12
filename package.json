@@ -1,16 +1,24 @@
 {
   "name": "ferret",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Simple mouse mover",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
-  },
   "author": "atagulalan",
+  "scripts": {
+    "start": "node index.js",
+    "delete": "del-cli ./dist",
+    "build": "nexe -r ./{node_modules,assets,public}/**/* --build --ico public\\favicon.ico -o ./dist/ferret.exe index.js",
+    "compress": "build_tools\\upx\\upx ./dist/ferret.exe",
+    "release": "npm run delete && npm run build && npm run compress"
+  },
   "dependencies": {
     "cli-table": "^0.3.1",
     "express": "^4.16.3",
-    "socketio": "^1.0.0"
+    "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.6.1",
+    "tasklist": "^5.0.0"
+  },
+  "devDependencies": {
+    "del-cli": "^5.0.0"
   }
 }

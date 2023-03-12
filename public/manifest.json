@@ -1,9 +1,9 @@
 {
-    "name": "Ferret",
-    "short_name": "Ferret",
-    "start_url": "/",
-    "theme_color": "#000",
-    "background_color": "#000",
-    "display":"standalone",
-    "orientation": "landscape"
-  }
+  "name": "Ferret",
+  "short_name": "Ferret",
+  "start_url": "/",
+  "theme_color": "#000",
+  "background_color": "#000",
+  "display": "standalone",
+  "orientation": "landscape"
+}

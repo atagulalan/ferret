@@ -1,11 +1,49 @@
-body{
-    margin:0;
-    overflow-y: hidden
+body {
+  margin: 0;
+  overflow-y: hidden;
+  background: #000;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: nowrap;
 }
 
-#touchpad{
-    width:100vw;
-    height:100vh;
-    background:#000;
-    color:white;
+* {
+  box-sizing: border-box;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+#container {
+  display: flex;
+  height: -webkit-fill-available;
+  align-items: flex-end;
+}
+
+#grid {
+  overflow: auto;
+  width: 100vw;
+  background: #000;
+  color: white;
+  position: relative;
+  display: grid;
+  column-gap: 14px;
+  row-gap: 14px;
+  padding: 28px 14px;
+  align-content: center;
+}
+
+i {
+  padding-top: 1.4vw;
+  padding-left: 0.4vw;
 }

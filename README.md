@@ -1,5 +1,6 @@
 # ferret
-🐭 Simple mouse mover
+
+🐭 Simple mouse mover (and keyboard presser now)
 
 ## Getting Started
 
@@ -25,7 +26,6 @@ npm start
 
 and it would print a table of your IPv4 adresses. By default, it'll run at [4540](https://eksisozluk.com/4540-merkez--3607686) port.
 
-
 ```
 ┌──────────────────────────────┬───────────────────┐
 │ VirtualBox Host-Only Network │ 192.168.56.1:4540 │
@@ -34,24 +34,19 @@ and it would print a table of your IPv4 adresses. By default, it'll run at [4540
 └──────────────────────────────┴───────────────────┘
 ```
 
-You can connect this adress with your phone's browser and start moving your cursor with your phone.
+You can connect this address with your phone's browser and start moving your cursor with your phone.
 (It must be connected to the same network as your PC)
 
 Have fun!
 
-
 ## Built With
 
-* [NodeJS](https://nodejs.org/en/) - JavaScript runtime built on Chrome's V8 JavaScript engine
+- [NodeJS](https://nodejs.org/en/) - JavaScript runtime built on Chrome's V8 JavaScript engine
 
 ## Authors
 
-* **Ata Gülalan** - *Initial work* - [atagulalan](https://github.com/atagulalan)
+- **Ata Gülalan** - _Initial work_ - [atagulalan](https://github.com/atagulalan)
 
 ## License
 
-Nope.
-
-## Acknowledgments
-
-¯\\\_(ツ)\_/¯
+This section can be found in LICENSE file.

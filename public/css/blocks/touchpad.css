@@ -1,0 +1,16 @@
+#touchpad {
+  grid-area: var(--name);
+  width: 100%;
+  height: auto;
+  background: #222;
+  color: white;
+  aspect-ratio: 4 / 3;
+  border: 2px solid #333;
+  border-radius: 4vw;
+}
+
+.touchpad-button {
+  aspect-ratio: auto;
+  height: 16vw;
+  border: 2px solid #333;
+}

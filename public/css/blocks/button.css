@@ -1,0 +1,22 @@
+button {
+  grid-area: var(--name);
+  touch-action: manipulation;
+  background: #222;
+  color: white;
+  border: none;
+  font-size: 10vw;
+  border-radius: 4vw;
+  outline: none !important;
+  cursor: pointer;
+  transition: 0.2s background ease-in-out, 0.2s transform;
+  text-rendering: optimizeLegibility;
+  text-align: center;
+  aspect-ratio: 1;
+  border: 2px solid #333;
+}
+
+button:active {
+  background: #333;
+  transform: scale(1.02);
+  transition: 0.01s background ease-in-out;
+}

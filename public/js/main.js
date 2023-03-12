@@ -1,59 +1,65 @@
-let socket = io();      //init socketio
-let periodicly = false; //sets response frequency
-let period = 100;       //ms
-let move = [0, 0];      //if periodicly, store all moves
+const socket = io()
 
-//JOIN FERRET
-socket.emit("join", "ferret");
+const { DEFAULT_BLOCK } = CONFIG
 
-//IF PERIODICLY, SET INTERVAL
-if (periodicly) setInterval(function () { if (move[0] || move[1]) socket.emit("move", [move[0], move[1]]); move[0] = move[1] = 0 }, period);
-
-//WAIT FOR LOAD
-window.onload = function () {
-    let tsx = 0;
-    let tsy = 0;
-    let touchpad = document.querySelectorAll("#touchpad")[0];
-    touchpad.addEventListener('touchstart', function (e) {
-        e.preventDefault();
-        if (e.touches.length === 1) {
-            tmx = tsx = e.changedTouches[0].pageX
-            tmy = tsy = e.changedTouches[0].pageY
-            console.log("ts", tsx, tsy)
-        }
-    }, false)
-    touchpad.addEventListener('touchmove', function (e) {
-        e.preventDefault();
-        if (e.touches.length === 1) {
-            let difX = Math.round(e.changedTouches[0].pageX - tmx);
-            let difY = Math.round(e.changedTouches[0].pageY - tmy);
-            console.log("tm", difX, difY);
-            tmx = e.changedTouches[0].pageX
-            tmy = e.changedTouches[0].pageY
-            moveCursor(difX, difY);
-        }
-    }, false)
-    touchpad.addEventListener('touchend', function (e) {
-        e.preventDefault();
-        if (e.touches.length === 0) {
-            if (tsx === tmx && tsy === tmy) {
-                console.log("miracle");
-                mouseClick();
-            }
-            tsx = tsy = tmx = tmy = 0;
-        }
-    }, false)
+const BLOCKS = {
+  button: createButton,
+  touchpad: createTouchpad
 }
 
-function moveCursor(x, y) { 
-    if (periodicly) {
-        move[0] += x; 
-        move[1] += y;
-    } else if (x || y) {
-        socket.emit(1, [x, y]);
-    }
+function createGrid(container, design) {
+  const grid = document.createElement('div')
+  grid.id = 'grid'
+  grid.style.setProperty(
+    'grid-template-areas',
+    design.map((row) => `"${row}"`).join(' ')
+  )
+  container.appendChild(grid)
+  return grid
 }
 
-function mouseClick() { 
-    socket.emit(2);
+function creteElement(block) {
+  // create button
+  const element = document.createElement(block.tag)
+  // set button id
+  if (block.id) element.id = block.id
+  // set button class
+  if (block.class) element.className = block.class
+  // set button text
+  if (block.text) element.innerText = block.text
+  // set button icon
+  // text is override by icon if both are set
+  if (block.icon) element.innerHTML = `<i class="bx ${block.icon}"></i>`
+  element.style.setProperty('--name', block.name)
+  return element
 }
+
+socket.on('load', ({ blocks, design }) => {
+  const container = document.querySelector('#container')
+  // clean up container
+  container.innerHTML = ''
+  // create grid
+  const grid = createGrid(container, design)
+
+  // for each button in the control panel
+  blocks.forEach((block) => {
+    // fill in missing properties
+    block = { ...DEFAULT_BLOCK, ...block }
+    // create element
+    const element = creteElement(block)
+    // add element to control panel
+    grid.appendChild(element)
+    // add functionality
+    BLOCKS[block.type]({ element, block })
+  })
+})
+
+// JOIN FERRET
+socket.emit('join', 'ferret')
+
+// RECONNECT
+socket.on('disconnect', () => {
+  // try to reconnect
+  socket.connect()
+  socket.emit('join', 'ferret')
+})

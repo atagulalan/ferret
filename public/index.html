@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000">
-    <link rel="manifest" href="manifest.json">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#000" />
+    <link rel="manifest" href="manifest.json" />
     <title>Ferret</title>
-    <script src="/js/socket.io.js"></script>
-    <script src="/js/main.js"></script>
-    <link rel="stylesheet" href="css/stylesheet.css">
-</head>
-<body>
-    <div id="touchpad" />
-</body>
+    <script src="js/socket.io.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/blocks/button.js"></script>
+    <script src="js/blocks/touchpad.js"></script>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/boxicons.min.css" />
+    <link rel="stylesheet" href="css/stylesheet.css" />
+    <link rel="stylesheet" href="css/blocks/button.css" />
+    <link rel="stylesheet" href="css/blocks/touchpad.css" />
+  </head>
+  <body>
+    <div id="container"></div>
+  </body>
 </html>
