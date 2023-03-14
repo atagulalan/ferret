@@ -6,7 +6,7 @@ button {
   background: var(--button-background);
   color: var(--button-color);
   border: none;
-  font-size: 8vw;
+  font-size: var(--button-icon-size);
   border-radius: var(--button-radius);
   outline: none !important;
   cursor: pointer;
@@ -32,8 +32,9 @@ button span {
   font-size: var(--button-text-size);
   line-height: var(--button-text-size);
   height: var(--button-text-size);
-  overflow: hidden;
-  padding: 0 0.1vw calc(var(--button-text-size) * 1.8);
+  padding: 0 var(--button-text-padding);
   font-weight: 600;
   color: var(--button-color);
+  word-break: break-word;
+  margin-bottom: calc(var(--button-text-size) * 0.7);
 }

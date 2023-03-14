@@ -15,7 +15,7 @@
 
 .touchpad-button {
   aspect-ratio: auto;
-  height: 16vw;
+  height: var(--touchpad-button-size);
   box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
   display: flex;
   justify-content: right;
@@ -26,17 +26,17 @@
 .touchpad-button:after {
   content: '';
   display: block;
-  width: 2vw;
+  width: var(--touchpad-button-icon-size);
   background: var(--button-background);
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  margin-left: 4vw;
+  margin-left: calc(var(--touchpad-button-icon-size) * 2);
   aspect-ratio: 1;
 }
 
 .touchpad-button:after {
-  margin-left: 1vw;
-  margin-right: 4vw;
+  margin-left: calc(var(--touchpad-button-icon-size) / 2);
+  margin-right: calc(var(--touchpad-button-icon-size) * 2);
 }
 
 .touchpad-button.left:before {

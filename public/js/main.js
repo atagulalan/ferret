@@ -20,18 +20,22 @@ const BLOCKS = {
   status: createStatusIcon
 }
 
-function createGrid(container, design) {
+function createGrid(container, { designVertical, designHorizontal }) {
   const grid = document.createElement('div')
   grid.id = 'grid'
   grid.style.setProperty(
-    'grid-template-areas',
-    design.map((row) => `"${row}"`).join(' ')
+    '--design-vertical',
+    designVertical.map((row) => `"${row}"`).join(' ')
+  )
+  grid.style.setProperty(
+    '--design-horizontal',
+    designHorizontal.map((row) => `"${row}"`).join(' ')
   )
   container.appendChild(grid)
   return grid
 }
 
-function creteElement(block) {
+function creteElement(block, { isVertical, isHorizontal }) {
   // create button
   const element = document.createElement(block.tag)
   // set button id
@@ -51,23 +55,45 @@ function creteElement(block) {
     element.appendChild(text)
   }
 
+  // set vertical and horizontal visibility by adding data
+  if (isVertical) element.dataset.vertical = ''
+  if (isHorizontal) element.dataset.horizontal = ''
+
   element.style.setProperty('--name', block.name)
   return element
 }
 
-socket.on('load', ({ blocks, design }) => {
+socket.on('load', ({ blocks, designVertical, designHorizontal }) => {
   const container = document.querySelector('#container')
   // clean up container
   container.innerHTML = ''
   // create grid
-  const grid = createGrid(container, design)
+  const grid = createGrid(container, { designVertical, designHorizontal })
+
+  const uniqueBlocks = {
+    verticalBlocks: new Set(
+      designVertical
+        .join(' ')
+        .split(' ')
+        .filter((x) => x && x !== '.')
+    ),
+    horizontalBlocks: new Set(
+      designHorizontal
+        .join(' ')
+        .split(' ')
+        .filter((x) => x && x !== '.')
+    )
+  }
 
   // for each button in the control panel
   blocks.forEach((block) => {
     // fill in missing properties
     block = { ...DEFAULT_BLOCK, ...block }
     // create element
-    const element = creteElement(block)
+    const element = creteElement(block, {
+      isVertical: uniqueBlocks.verticalBlocks.has(block.name),
+      isHorizontal: uniqueBlocks.horizontalBlocks.has(block.name)
+    })
     // add element to control panel
     grid.appendChild(element)
     // add functionality

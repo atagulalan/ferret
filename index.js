@@ -22,24 +22,6 @@ if (!fs.existsSync('./settings.json')) {
   fs.writeFileSync('./settings.json', fs.readFileSync('assets/settings.json'))
 }
 
-// check if settings file exists
-// if not, create it
-if (!fs.existsSync('./settings.json')) {
-  fs.writeFileSync(
-    './settings.json',
-    JSON.stringify({
-      design: ['no-settings'],
-      blocks: [
-        {
-          name: 'no-settings',
-          text: 'You need to set up your settings.json file. See the README for more info.',
-          tag: 'div'
-        }
-      ]
-    })
-  )
-}
-
 const settings = JSON.parse(fs.readFileSync('./settings.json', 'utf8'))
 const DEBUG = settings.debug || false
 

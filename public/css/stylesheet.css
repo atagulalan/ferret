@@ -12,13 +12,18 @@
 }
 
 :root {
+  --button-icon-size: 8vw;
   --button-text-size: 2.7vw;
+  --button-text-padding: 0.8vw;
   --button-border-width: 2px;
   --button-border-color: rgba(255, 255, 255, 0.05);
-  --button-radius: 2vw;
+  --button-radius: 2vmin;
   --button-color: rgba(255, 255, 255, 0.4);
   --button-background: rgba(255, 255, 255, 0.12);
   --button-active-background: rgba(255, 255, 255, 0.2);
+
+  --touchpad-button-size: 16vw;
+  --touchpad-button-icon-size: 2vw;
 }
 
 body {
@@ -70,7 +75,27 @@ body {
   grid-auto-flow: column;
 }
 
+/* media query for vertical screens */
+@media (orientation: portrait) {
+  #grid > *:not([data-vertical]) {
+    display: none;
+  }
+  #grid {
+    grid-template-areas: var(--design-vertical);
+  }
+}
+
+/* media query for horizontal screens */
+@media (orientation: landscape) {
+  #grid > *:not([data-horizontal]) {
+    display: none;
+  }
+  #grid {
+    grid-template-areas: var(--design-horizontal);
+  }
+}
+
 i {
-  padding-top: 1.4vw;
-  padding-left: 0.4vw;
+  padding-top: calc(0.175 * var(--button-icon-size));
+  padding-left: calc(0.05 * var(--button-icon-size));
 }
