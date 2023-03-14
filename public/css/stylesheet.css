@@ -41,6 +41,8 @@ body {
   row-gap: 14px;
   padding: 28px 14px;
   align-content: center;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
 }
 
 i {

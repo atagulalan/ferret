@@ -4,7 +4,8 @@ const { DEFAULT_BLOCK } = CONFIG
 
 const BLOCKS = {
   button: createButton,
-  touchpad: createTouchpad
+  touchpad: createTouchpad,
+  keyboard: createKeyboard
 }
 
 function createGrid(container, design) {
@@ -50,7 +51,8 @@ socket.on('load', ({ blocks, design }) => {
     // add element to control panel
     grid.appendChild(element)
     // add functionality
-    BLOCKS[block.type]({ element, block })
+    BLOCKS[block.type]?.({ element, block })
+    // TODO: add module missing alert
   })
 })
 

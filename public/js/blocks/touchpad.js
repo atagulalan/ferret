@@ -13,7 +13,7 @@ const createTouchpad = ({ element: touchpad }) => {
   if (!touchpad) return
 
   const moveCursor = ({ x, y }) => {
-    if (x || y) send(`movecursor ${x} ${y}`, true)
+    if (x || y) socket.emit(0, `movecursor ${x} ${y}`)
   }
 
   const FIRST_TOUCH = { x: 0, y: 0, timestamp: 0, index: -1 }

@@ -1,9 +1,9 @@
 # To-Do List
 
 - [x] Better touchpad precision
+- [x] Native keyboard support
 - [ ] Remove node_modules from build
 - [ ] Two finger scroll
-- [ ] Native keyboard support
 - [ ] Active application modules
 - [ ] Horizontal mode
 - [ ] Connection status indicator

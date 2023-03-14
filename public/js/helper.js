@@ -69,13 +69,24 @@ function log(...args) {
   socket.emit('log', ...args)
 }
 
-function send(command, noVibrate) {
-  if (!command) return
-  if (!noVibrate && !!vibrate)
+function send(...commands) {
+  if (commands.every((command) => !command)) return
+  if (!!vibrate)
     vibrate({
       duration: 20,
       interval: 100,
       count: 1
     })
-  socket.emit(0, command)
+  socket.emit(0, ...commands.filter((command) => !!command))
+}
+
+function sendSync(...commands) {
+  if (commands.every((command) => !command)) return
+  if (!!vibrate)
+    vibrate({
+      duration: 20,
+      interval: 100,
+      count: 1
+    })
+  socket.emit(1, ...commands.filter((command) => !!command))
 }

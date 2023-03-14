@@ -18,5 +18,12 @@ const CONFIG = {
   // BUTTON is used to configure button behavior
   BUTTON: {
     REPEAT_INITIAL_DELAY: 400 // button hold delay before repeat starts
+  },
+  // KEYBOARD is used to configure keyboard behavior
+  KEYBOARD: {
+    // method can be 'clipboard' or 'virtualKeyCode'
+    // clipboard is more reliable but saves and loads clipboard
+    // virtualKeyCode is less reliable but does not save and load clipboard
+    METHOD: 'clipboard'
   }
 }
