@@ -137,5 +137,19 @@ io.on('connection', function (socket) {
   })
 })
 
+// Look for settings.json changes
+fs.watchFile('./settings.json', (curr, prev) => {
+  if (curr.mtime !== prev.mtime) {
+    try {
+      const newSettings = JSON.parse(fs.readFileSync('./settings.json', 'utf8'))
+      io.emit('load', newSettings)
+      DEBUG && console.log('settings updated')
+    } catch (e) {
+      console.log('error loading settings')
+      console.error(e)
+    }
+  }
+})
+
 //Show IP's and ports to user
 showIPs(PORT)
