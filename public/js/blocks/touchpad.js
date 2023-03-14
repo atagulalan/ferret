@@ -9,7 +9,7 @@ const {
   MOVE_THRESHOLD
 } = CONFIG.TOUCHPAD
 
-const createTouchpad = ({ element: touchpad }) => {
+const createTouchpad = ({ socket, element: touchpad }) => {
   if (!touchpad) return
 
   const moveCursor = ({ x, y }) => {
@@ -162,7 +162,7 @@ const createTouchpad = ({ element: touchpad }) => {
 
       // if double click recently, release
       if (DOUBLE_TAP_RECENTLY) {
-        send('mouse left up', true)
+        send('mouse left up')
         if (DOUBLE_TAP_TIMESTAMP + DOUBLE_TAP_HOLD_DURATION > +new Date())
           send('mouse left click')
         LOGS.DOUBLE_TAP_RECENTLY = false
@@ -200,3 +200,5 @@ const createTouchpad = ({ element: touchpad }) => {
     false
   )
 }
+
+export default createTouchpad

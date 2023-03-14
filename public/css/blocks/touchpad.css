@@ -2,15 +2,49 @@
   grid-area: var(--name);
   width: 100%;
   height: auto;
-  background: #222;
-  color: white;
+  background: var(--button-background);
   aspect-ratio: 4 / 3;
-  border: 2px solid #333;
-  border-radius: 4vw;
+  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
+  border-radius: var(--button-radius);
+  background-image: url(/ferret.png);
+  background-size: 10%;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 12px) 100%;
+  filter: grayscale(100%);
 }
 
 .touchpad-button {
   aspect-ratio: auto;
   height: 16vw;
-  border: 2px solid #333;
+  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.touchpad-button:before,
+.touchpad-button:after {
+  content: '';
+  display: block;
+  width: 2vw;
+  background: var(--button-background);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-left: 4vw;
+  aspect-ratio: 1;
+}
+
+.touchpad-button:after {
+  margin-left: 1vw;
+  margin-right: 4vw;
+}
+
+.touchpad-button.left:before {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.touchpad-button.right:after {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
 }

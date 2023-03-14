@@ -1,11 +1,23 @@
-const socket = io()
+const socket = io({
+  autoConnect: false,
+  reconnection: true
+})
+
+// set global handler
+window.socket = socket
+
+import createButton from './blocks/button.js'
+import createTouchpad from './blocks/touchpad.js'
+import createKeyboard from './blocks/keyboard.js'
+import createStatusIcon from './blocks/status.js'
 
 const { DEFAULT_BLOCK } = CONFIG
 
 const BLOCKS = {
   button: createButton,
   touchpad: createTouchpad,
-  keyboard: createKeyboard
+  keyboard: createKeyboard,
+  status: createStatusIcon
 }
 
 function createGrid(container, design) {
@@ -26,11 +38,19 @@ function creteElement(block) {
   if (block.id) element.id = block.id
   // set button class
   if (block.class) element.className = block.class
-  // set button text
-  if (block.text) element.innerText = block.text
   // set button icon
-  // text is override by icon if both are set
-  if (block.icon) element.innerHTML = `<i class="bx ${block.icon}"></i>`
+  if (block.icon) {
+    const icon = document.createElement('i')
+    icon.classList.add('bx', block.icon)
+    element.appendChild(icon)
+  }
+  // set button text
+  if (block.text) {
+    const text = document.createElement('span')
+    text.innerText = block.text
+    element.appendChild(text)
+  }
+
   element.style.setProperty('--name', block.name)
   return element
 }
@@ -51,17 +71,9 @@ socket.on('load', ({ blocks, design }) => {
     // add element to control panel
     grid.appendChild(element)
     // add functionality
-    BLOCKS[block.type]?.({ element, block })
+    BLOCKS[block.type]?.({ socket, element, block })
     // TODO: add module missing alert
   })
 })
 
-// JOIN FERRET
-socket.emit('join', 'ferret')
-
-// RECONNECT
-socket.on('disconnect', () => {
-  // try to reconnect
-  socket.connect()
-  socket.emit('join', 'ferret')
-})
+socket.connect()

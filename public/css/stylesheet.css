@@ -1,6 +1,29 @@
+@import url('boxicons.min.css');
+@import url('blocks/button.css');
+@import url('blocks/touchpad.css');
+@import url('blocks/keyboard.css');
+@import url('blocks/status.css');
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+}
+
+:root {
+  --button-text-size: 2.7vw;
+  --button-border-width: 2px;
+  --button-border-color: rgba(255, 255, 255, 0.05);
+  --button-radius: 2vw;
+  --button-color: rgba(255, 255, 255, 0.4);
+  --button-background: rgba(255, 255, 255, 0.12);
+  --button-active-background: rgba(255, 255, 255, 0.2);
+}
+
 body {
   margin: 0;
-  overflow-y: hidden;
+  overflow-y: auto;
   background: #000;
   height: 100dvh;
   display: flex;
@@ -24,14 +47,16 @@ body {
   outline: none !important;
 }
 
+#spacer {
+  flex: 1 1 auto;
+}
+
 #container {
   display: flex;
-  height: -webkit-fill-available;
-  align-items: flex-end;
 }
 
 #grid {
-  overflow: auto;
+  overflow: visible;
   width: 100vw;
   background: #000;
   color: white;

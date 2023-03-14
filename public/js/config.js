@@ -25,5 +25,21 @@ const CONFIG = {
     // clipboard is more reliable but saves and loads clipboard
     // virtualKeyCode is less reliable but does not save and load clipboard
     METHOD: 'clipboard'
+  },
+  // STATUS is used to configure status icon of socket connection
+  STATUS: {
+    // status icon can be 'pulsating', 'static', 'icon'
+    // 'pulsating' will show pulsating dot
+    // 'static' will show static dot
+    // 'icon' will show link and unlink icons
+    TYPE: 'pulsating',
+    // action can be 'reload', 'reconnect' or 'none'
+    // 'reload' will reload the page
+    // 'reconnect' will reconnect the socket
+    // reload is more reliable but will reload the page
+    ACTION: 'reload'
   }
 }
+
+// freeze the object to prevent changes
+Object.freeze(CONFIG)

@@ -1,7 +1,7 @@
 const execFile = require('util').promisify(require('child_process').execFile)
 const { showIPs } = require('./src/ip')
 const express = require('express')
-const socketIO = require('socket.io')
+const { Server } = require('socket.io')
 const path = require('path')
 const fs = require('fs')
 
@@ -11,7 +11,7 @@ const INDEX = path.join(__dirname, './public')
 // Start server
 const server = express().use(express.static(INDEX)).listen(PORT)
 
-const io = socketIO(server)
+const io = new Server(server)
 
 // export nircmd.exe to win32 folder if it doesn't exist
 if (!fs.existsSync('./win32/nircmd.exe')) {
@@ -145,16 +145,13 @@ function send(...commands) {
 }
 
 io.on('connection', function (socket) {
-  socket.on('join', function (ferret) {
-    DEBUG && console.log(ferret + ' connected.')
-    socket.join(ferret)
-    socket.emit('load', settings)
-    socket.on(0, send)
-    socket.on(1, addToQueue)
-    socket.on('log', (...args) => DEBUG && console.log(...args))
-    socket.on('disconnect', function () {
-      DEBUG && console.log(ferret + ' disconnected.')
-    })
+  DEBUG && console.log('ferret connected.')
+  socket.emit('load', settings)
+  socket.on(0, send)
+  socket.on(1, addToQueue)
+  socket.on('log', (...args) => DEBUG && console.log(...args))
+  socket.on('disconnect', function () {
+    DEBUG && console.log('ferret disconnected.')
   })
 })
 

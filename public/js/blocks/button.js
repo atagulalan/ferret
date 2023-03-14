@@ -3,7 +3,10 @@ const { REPEAT_INITIAL_DELAY } = CONFIG.BUTTON
 // ios button stuck fix
 document.addEventListener('touchstart', function () {}, false)
 
-const createButton = ({ element: button, block }) => {
+// right click context menu fix
+document.addEventListener('contextmenu', (event) => event.preventDefault())
+
+const createButton = ({ socket, element: button, block }) => {
   // add touch event listener
   button.addEventListener('touchstart', function () {
     // get command
@@ -37,3 +40,5 @@ const createButton = ({ element: button, block }) => {
     send(commandUp)
   })
 }
+
+export default createButton

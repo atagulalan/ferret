@@ -56,7 +56,10 @@ const createHiddenInput = () => {
   input.setAttribute('type', 'text')
 
   // hide input element
-  input.setAttribute('style', 'position: absolute; top: 0px; left: 0px;')
+  input.setAttribute(
+    'style',
+    'position: absolute; top: -9999px; left: -9999px;'
+  )
 
   // disable autocapitalize and autocorrect
   input.setAttribute('autocapitalize', 'off')
@@ -136,3 +139,5 @@ const createKeyboard = ({ element: keyboard, block }) => {
     })
   })
 }
+
+export default createKeyboard
