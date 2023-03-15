@@ -1,10 +1,11 @@
-const os = require('os')
+import os from 'os'
+import QR from 'qrcode-terminal'
+import Table from 'cli-table'
+
 const interfaces = os.networkInterfaces()
-const QR = require('qrcode-terminal')
-const Table = require('cli-table')
 const table = new Table()
 
-exports.showIPs = function (port) {
+export function showIPs(port) {
   Object.keys(interfaces).forEach(function (interfaceName) {
     interfaces[interfaceName].forEach(function (iface) {
       if ('IPv4' !== iface.family || iface.internal !== false) {

@@ -4,6 +4,8 @@
   "description": "Simple mouse mover",
   "main": "index.js",
   "author": "atagulalan",
+  "license": "MIT",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "delete": "del-cli ./dist",
@@ -14,6 +16,8 @@
   "dependencies": {
     "cli-table": "^0.3.1",
     "express": "^4.16.3",
+    "node-gyp": "^9.3.1",
+    "node-powershell": "^5.0.1",
     "qrcode-terminal": "^0.12.0",
     "socket.io": "^4.6.1",
     "tasklist": "^5.0.0"

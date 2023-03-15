@@ -38,6 +38,13 @@ const CONFIG = {
     // 'reconnect' will reconnect the socket
     // reload is more reliable but will reload the page
     ACTION: 'reload'
+  },
+  // TASKBAR is used to configure taskbar behavior
+  TASKBAR: {
+    // type can be 'button' or 'select'
+    // 'button' will show a button
+    // 'select' will show a select
+    TYPE: 'select'
   }
 }
 

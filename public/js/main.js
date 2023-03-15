@@ -10,6 +10,7 @@ import createButton from './blocks/button.js'
 import createTouchpad from './blocks/touchpad.js'
 import createKeyboard from './blocks/keyboard.js'
 import createStatusIcon from './blocks/status.js'
+import createTaskbar from './blocks/taskbar.js'
 
 const { DEFAULT_BLOCK } = CONFIG
 
@@ -17,7 +18,8 @@ const BLOCKS = {
   button: createButton,
   touchpad: createTouchpad,
   keyboard: createKeyboard,
-  status: createStatusIcon
+  status: createStatusIcon,
+  taskbar: createTaskbar
 }
 
 function createGrid(container, { designVertical, designHorizontal }) {
@@ -63,7 +65,13 @@ function creteElement(block, { isVertical, isHorizontal }) {
   return element
 }
 
-socket.on('load', ({ blocks, designVertical, designHorizontal }) => {
+socket.on('load', ({ settings, username }) => {
+  console.log('Welcome,', username)
+
+  const { blocks, designVertical, designHorizontal, background } = settings
+  // set background
+  document.body.style.background = `${background}`
+
   const container = document.querySelector('#container')
   // clean up container
   container.innerHTML = ''
@@ -99,6 +107,7 @@ socket.on('load', ({ blocks, designVertical, designHorizontal }) => {
     // add functionality
     BLOCKS[block.type]?.({ socket, element, block })
     // TODO: add module missing alert
+    // TODO: module lifecycle hooks: onCreate, onDestroy
   })
 })
 

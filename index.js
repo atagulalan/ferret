@@ -1,23 +1,35 @@
-const execFile = require('util').promisify(require('child_process').execFile)
-const { showIPs } = require('./src/ip')
-const express = require('express')
-const { Server } = require('socket.io')
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
+import { showIPs } from './src/ip.js'
+import { initTaskbarInterval } from './src/taskbar.js'
+import { getUsername } from './src/username.js'
+import { addToQueue } from './src/send-sync.js'
+import { initWatchSettings } from './src/watch-settings.js'
+import { send } from './src/send.js'
+import { Server } from 'socket.io'
+import express from 'express'
+
+// module dirname hack
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const PORT = process.env.PORT || 4540
 const INDEX = path.join(__dirname, './public')
 
 // Start server
 const server = express().use(express.static(INDEX)).listen(PORT)
-
 const io = new Server(server)
+
+const sockets = []
+const username = await getUsername()
 
 // export nircmd.exe to win32 folder if it doesn't exist
 if (!fs.existsSync('./win32/nircmd.exe')) {
   if (!fs.existsSync('./win32')) fs.mkdirSync('./win32')
   fs.writeFileSync('./win32/nircmd.exe', fs.readFileSync('assets/nircmd.exe'))
 }
+
+// export settings.json to root folder if it doesn't exist
 if (!fs.existsSync('./settings.json')) {
   fs.writeFileSync('./settings.json', fs.readFileSync('assets/settings.json'))
 }
@@ -25,131 +37,21 @@ if (!fs.existsSync('./settings.json')) {
 const settings = JSON.parse(fs.readFileSync('./settings.json', 'utf8'))
 const DEBUG = settings.debug || false
 
-const conversions = {
-  mouse: {
-    command: 'sendmouse'
-  },
-  volume: {
-    command: 'changesysvolume',
-    argConverter: (...args) => {
-      return args.map((arg, i) => {
-        if (i === 0) {
-          return arg * 655
-        }
-        return arg
-      })
-    }
-  },
-  key: {
-    command: 'sendkey'
-  },
-  press: {
-    command: 'sendkeypress'
-  }
-}
-
-let executeLock = false
-const commandQueue = []
-
-function addToQueue(...commands) {
-  commands.forEach((command, i) => {
-    commandQueue.push({
-      status: 'pending',
-      id: +new Date() + '-' + i,
-      command
-    })
-  })
-}
-
-async function sendSync(...items) {
-  if (items.every(({ command }) => !command)) return
-
-  // if already looping through command queue, add to queue
-  if (executeLock) return
-  executeLock = true
-
-  for (let { command, id } of items) {
-    // convert main command
-    const [mainCommand, ...args] = command.split(' ')
-    const { command: convertedCommand, argConverter } =
-      conversions[mainCommand] || {}
-    console.log('EXECUTING', command)
-
-    try {
-      // change status
-      commandQueue.find(({ id: i }) => i === id).status = 'executing'
-      const eCmd = convertedCommand || mainCommand
-      const eArgs = argConverter ? argConverter(...args) : args
-      await execFile('./win32/nircmd.exe', [eCmd, ...eArgs])
-      console.log('DONE.')
-      // remove from queue
-      commandQueue.splice(
-        commandQueue.findIndex(({ id: i }) => i === id),
-        1
-      )
-    } catch (e) {
-      // An error ocurred attempting to execute the script
-      console.log('error executing script:', command)
-      console.error(e)
-    }
-  }
-  executeLock = false
-}
-
-// loop through command queue
-setInterval(() => {
-  if (!executeLock) {
-    sendSync(...commandQueue.filter(({ status }) => status === 'pending'))
-  }
-}, 1)
-
-// send
-function send(...commands) {
-  if (commands.every((command) => !command)) return
-
-  for (let command of commands) {
-    console.log(command)
-    // convert main command
-    const [mainCommand, ...args] = command.split(' ')
-    const { command: convertedCommand, argConverter } =
-      conversions[mainCommand] || {}
-
-    try {
-      const eCmd = convertedCommand || mainCommand
-      const eArgs = argConverter ? argConverter(...args) : args
-      execFile('./win32/nircmd.exe', [eCmd, ...eArgs])
-    } catch (e) {
-      // An error ocurred attempting to execute the script
-      console.log('error executing script:', command)
-      console.error(e)
-    }
-  }
-}
-
 io.on('connection', function (socket) {
   DEBUG && console.log('ferret connected.')
-  socket.emit('load', settings)
+  socket.emit('load', { settings, username })
   socket.on(0, send)
   socket.on(1, addToQueue)
   socket.on('log', (...args) => DEBUG && console.log(...args))
-  socket.on('disconnect', function () {
-    DEBUG && console.log('ferret disconnected.')
-  })
+  socket.on('disconnect', () => DEBUG && console.log('ferret disconnected.'))
+  sockets.push(socket)
 })
 
-// Look for settings.json changes
-fs.watchFile('./settings.json', (curr, prev) => {
-  if (curr.mtime !== prev.mtime) {
-    try {
-      const newSettings = JSON.parse(fs.readFileSync('./settings.json', 'utf8'))
-      io.emit('load', newSettings)
-      DEBUG && console.log('settings updated')
-    } catch (e) {
-      console.log('error loading settings')
-      console.error(e)
-    }
-  }
+initTaskbarInterval({
+  sockets,
+  ignoredProcessNames: ['Rainmeter', 'NVIDIA Share']
 })
+initWatchSettings()
 
 //Show IP's and ports to user
 showIPs(PORT)
