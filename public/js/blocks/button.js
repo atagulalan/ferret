@@ -11,6 +11,14 @@ export default {
     touchStartEvent: null,
     touchEndEvent: null
   },
+  on: {
+    keyboardFocus: function () {
+      console.log('keyboard focus', this.element)
+    },
+    keyboardBlur: function () {
+      console.log('keyboard blur')
+    }
+  },
   onCreate: function ({ element: button, block }) {
     // add touch event listener
     this.touchStartEvent = function () {

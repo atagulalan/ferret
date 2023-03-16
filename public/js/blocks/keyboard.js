@@ -90,7 +90,7 @@ export default {
 
       this.focusEvent = function () {
         // notify other blocks via event bus
-        bus.emit('keyboard-focus')
+        bus.emit('keyboardFocus')
       }
       input.addEventListener('focus', this.focusEvent)
 
@@ -135,7 +135,7 @@ export default {
       // on input element blur
       this.blurEvent = function () {
         // notify other blocks via event bus
-        bus.emit('keyboard-blur')
+        bus.emit('keyboardBlur')
         // remove event listeners
         input.removeEventListener('focus', this.focusEvent)
         input.removeEventListener('keyup', this.keyUpEvent)

@@ -7,8 +7,10 @@ const activeBlocks = []
 
 // set global handlers
 window.socket = socket
-window.bus = function (...args) {
-  blocks.notify(...args)
+window.bus = {
+  emit: function (...args) {
+    activeBlocks.forEach((block) => block.notify?.(...args))
+  }
 }
 
 import createButton from './blocks/button.js'
@@ -82,6 +84,9 @@ socket.on('load', ({ settings, username }) => {
   // notify all blocks that all blocks will be destroyed
   activeBlocks.forEach((block) => block.destroy())
 
+  // clear active blocks
+  activeBlocks.length = 0
+
   // clean up container
   container.innerHTML = ''
 
@@ -123,10 +128,20 @@ socket.on('load', ({ settings, username }) => {
     // call onCreate hook
     BLOCKS[block.type].onCreate?.({ socket, element, block })
 
+    // be careful, eval is evil
+    const bindKeys = ['socket', 'element', 'block']
+
+    bindKeys.forEach((key) => {
+      // sanitize key
+      key = key.replace(/[^a-zA-Z0-9_]/g, '')
+      BLOCKS[block.type][key] = eval(key)
+      if (BLOCKS[block.type].on) BLOCKS[block.type].on[key] = eval(key)
+    })
+
     activeBlocks.push({
       name: block.name,
       destroy: () => BLOCKS[block.type].onDestroy?.({ socket, element, block }),
-      notify: () => BLOCKS[block.type].on?.({ socket, element, block })
+      notify: (key, ...args) => BLOCKS[block.type].on?.[key]?.(...args)
     })
   })
 })
