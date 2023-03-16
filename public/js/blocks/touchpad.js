@@ -141,7 +141,6 @@ const createTouchpad = ({ socket, element: touchpad }) => {
       diff.y = Math.floor(diff.y * acceleration)
 
       // move cursor
-      // console.log(diff)
       moveCursor(diff)
     },
     false

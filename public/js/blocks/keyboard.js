@@ -73,7 +73,6 @@ const createHiddenInput = () => {
 
 const createKeyboard = ({ element: keyboard, block }) => {
   keyboard.addEventListener('click', () => {
-    // send p, delete, p again and it crashes
     let lastKey = ''
 
     // create and focus input element
@@ -89,22 +88,11 @@ const createKeyboard = ({ element: keyboard, block }) => {
       if (target.value) {
         lastKey = target.value[target.value.length - 1]
       }
-      // clear target value
-      // target.value = ''
-      // IF WE CLEAR INPUT VALUE, IT LAGS
+      // IF WE CLEAR INPUT VALUE HERE, IT LAGS
     }
 
     const sendInput = () => {
-      // log('sendinput called')
-      // const value = input.value
-      // // get caret position
-      // const caretPosition = input.selectionStart
-      // // get last character
-      // const key = value[caretPosition - 1]
-      // // if key is undefined
-      // if (!key) return
       if (!lastKey) return
-      log('>', lastKey)
       if (METHOD === 'clipboard') clipboardMethod(lastKey)
       else if (METHOD === 'virtualKeyCode') virtualKeyCodeMethod(lastKey)
     }
@@ -114,7 +102,6 @@ const createKeyboard = ({ element: keyboard, block }) => {
       let key = event.key
       setLastKey()
       if (key === 'Unidentified') {
-        log('+')
         input.value = ''
         return
       }
@@ -123,8 +110,6 @@ const createKeyboard = ({ element: keyboard, block }) => {
     })
 
     const inputEvent = input.addEventListener('input', (event) => {
-      // log('input event triggered')
-      log('T', event.target.value)
       setLastKey(event.target)
       sendInput()
     })

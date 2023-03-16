@@ -1,20 +1,21 @@
 import fs from 'fs'
+import path from 'path'
+import { log } from './log.js'
 
-export function initWatchSettings() {
+export function initWatchSettings({ sockets, ferretFolder }) {
   // Look for settings.json changes
-  fs.watchFile('./settings.json', (curr, prev) => {
+  fs.watchFile(path.resolve(ferretFolder, './settings.json'), (curr, prev) => {
     if (curr.mtime !== prev.mtime) {
       try {
         const newSettings = JSON.parse(
-          fs.readFileSync('./settings.json', 'utf8')
+          fs.readFileSync(path.resolve(ferretFolder, './settings.json'), 'utf8')
         )
-        io.emit('load', {
-          settings: newSettings
-        })
-        console.log('settings updated')
-      } catch (e) {
-        console.log('error loading settings')
-        console.error(e)
+        sockets.forEach((socket) =>
+          socket.emit('load', { settings: newSettings })
+        )
+        log.info('Settings updated.')
+      } catch (error) {
+        log.error('Loading settings failed.', error)
       }
     }
   })

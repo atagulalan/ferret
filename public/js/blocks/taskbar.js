@@ -36,12 +36,12 @@ const createTaskbar = ({ socket, element: taskbar }) => {
     taskbar.value = value
   }
 
+  // TODO use type from config
   console.log('type', TYPE)
 
   // listen for items change
   socket.on('taskbar', ({ foreground, items }) => {
     taskbar.value = foreground
-    console.log('foreground', foreground)
     updateItems(items)
   })
 

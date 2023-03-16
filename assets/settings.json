@@ -1,46 +1,79 @@
 {
-  "debug": true,
-  "design": [
-    "volume-down volume-up play",
-    "previous next discord-mute",
-    "touchpad touchpad touchpad",
-    "mouse-left mouse-left mouse-right"
+  "background": "#050505",
+  "debug": "debug",
+  "designVertical": [
+    "taskbar taskbar taskbar taskbar",
+    "volume-down volume-up keyboard status",
+    "previous next play discord-mute",
+    "touchpad touchpad touchpad touchpad",
+    "mouse-left mouse-left mouse-right mouse-right"
+  ],
+  "designHorizontal": [
+    "volume-down volume-up keyboard status",
+    "previous next play discord-mute"
   ],
   "blocks": [
+    {
+      "name": "taskbar",
+      "type": "taskbar",
+      "id": "taskbar",
+      "tag": "select"
+    },
+    {
+      "name": "status",
+      "type": "status",
+      "id": "status",
+      "tag": "button"
+    },
+    {
+      "name": "keyboard",
+      "type": "keyboard",
+      "id": "keyboard",
+      "tag": "button",
+      "icon": "bxs-keyboard",
+      "text": "Keyboard"
+    },
     {
       "name": "volume-down",
       "command": "volume -1",
       "repeatInterval": 20,
-      "icon": "bx-volume-low"
+      "icon": "bx-volume-low",
+      "text": "Lower"
     },
     {
       "name": "volume-up",
       "command": "volume 1",
       "repeatInterval": 20,
-      "icon": "bx-volume-full"
+      "icon": "bx-volume-full",
+      "text": "Higher"
     },
     {
       "name": "discord-mute",
       "command": "press alt+x",
-      "icon": "bx-microphone-off"
+      "icon": "bx-microphone-off",
+      "text": "Mute"
     },
     {
       "name": "previous",
       "command": "press left",
-      "icon": "bx-skip-previous"
+      "icon": "bxs-chevrons-left",
+      "text": "Rewind"
     },
     {
       "name": "next",
       "command": "press right",
-      "icon": "bx-skip-next"
+      "icon": "bxs-chevrons-right",
+      "text": "Forward"
     },
     {
       "name": "play",
       "command": "press spc",
-      "icon": "bx-play"
+      "icon": "bx-pause",
+      "text": "Pause"
     },
     {
       "name": "touchpad",
+      "type": "touchpad",
       "id": "touchpad",
       "tag": "div"
     },
@@ -48,13 +81,13 @@
       "name": "mouse-left",
       "commandDown": "mouse left down",
       "commandUp": "mouse left up",
-      "class": "touchpad-button"
+      "class": "touchpad-button left"
     },
     {
       "name": "mouse-right",
       "commandDown": "mouse right down",
       "commandUp": "mouse right up",
-      "class": "touchpad-button"
+      "class": "touchpad-button right"
     }
   ]
 }

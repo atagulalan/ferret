@@ -61,12 +61,11 @@ You can change debug level by changing "debug" variable in settings.json file.
 
 Debug levels can be:
 
-- "error"
-- "warn"
-- "info" (default)
-- "verbose"
-- "debug"
-- "silly"
+- "error" (1)
+- "warn" (2)
+- "info" (default) (3)
+- "debug" (4)
+- "silly" (5)
 
 ## Built With
 

@@ -7,6 +7,7 @@
 - [x] Auto reload on settings change
 - [x] Running application focus
   - [ ] Minimize, maximize, close?
+- [ ] Vertical and horizontal buttons, not only square ones
 - [ ] Use PC username to greet user on mobile
 - [ ] Remove node_modules from build
 - [ ] Two finger scroll

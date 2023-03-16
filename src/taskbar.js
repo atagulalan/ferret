@@ -1,4 +1,5 @@
 import { PowerShell } from 'node-powershell'
+import { log } from './log.js'
 
 async function getForegroundWindow() {
   const foregroundShell = PowerShell.$`$code = @'
@@ -40,13 +41,13 @@ export async function getTaskbar(ignoredProcessNames) {
       items,
       time: end - start
     }
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    log.error('Getting taskbar failed.', error)
     return { foreground: '', items: [] }
   }
 }
 
-export function initTaskbarInterval({ DEBUG, sockets, ignoredProcessNames }) {
+export function initTaskbarInterval({ sockets, ignoredProcessNames }) {
   let stillRunning = false
   let taskbarStatus = null
 
@@ -57,11 +58,10 @@ export function initTaskbarInterval({ DEBUG, sockets, ignoredProcessNames }) {
       stillRunning = true
       taskbarStatus = await getTaskbar(ignoredProcessNames)
       stillRunning = false
-      DEBUG === 'silly' &&
-        process.stdout.write(`done in ${taskbarStatus.time}ms!\r\n`)
+      log.silly(`Taskbar info got in ${taskbarStatus.time}ms!\r\n`)
     } else {
       // loading dots
-      if (stillRunning) DEBUG === 'silly' && process.stdout.write('.')
+      if (stillRunning) log.silly('Waiting for taskbar info...')
     }
   }, 100)
 
@@ -69,7 +69,7 @@ export function initTaskbarInterval({ DEBUG, sockets, ignoredProcessNames }) {
   // emits taskbar status to all clients
   setInterval(() => {
     if (taskbarStatus === null) {
-      DEBUG && console.log('taskbar status not ready')
+      log.warn('Taskbar status not ready.')
       return
     }
     // consume taskbar status
