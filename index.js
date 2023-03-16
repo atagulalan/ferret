@@ -48,9 +48,11 @@ io.on('connection', function (socket) {
 })
 
 initTaskbarInterval({
+  DEBUG,
   sockets,
   ignoredProcessNames: ['Rainmeter', 'NVIDIA Share']
 })
+
 initWatchSettings()
 
 //Show IP's and ports to user

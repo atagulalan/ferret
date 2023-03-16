@@ -46,27 +46,30 @@ export async function getTaskbar(ignoredProcessNames) {
   }
 }
 
-export function initTaskbarInterval({ sockets, ignoredProcessNames }) {
-  let finishedInterval = true
+export function initTaskbarInterval({ DEBUG, sockets, ignoredProcessNames }) {
+  let stillRunning = false
   let taskbarStatus = null
+
   // after taskbar status is retrieved, run again indefinitely
   setInterval(async () => {
     // if taskbar status is consumed, get new status
-    if (!taskbarStatus && finishedInterval) {
-      finishedInterval = false
+    if (!taskbarStatus && !stillRunning) {
+      stillRunning = true
       taskbarStatus = await getTaskbar(ignoredProcessNames)
-      finishedInterval = true
-      process.stdout.write(`done in ${taskbarStatus.time}ms!\r\n`)
+      stillRunning = false
+      DEBUG === 'silly' &&
+        process.stdout.write(`done in ${taskbarStatus.time}ms!\r\n`)
     } else {
       // loading dots
-      if (!finishedInterval) process.stdout.write('.')
+      if (stillRunning) DEBUG === 'silly' && process.stdout.write('.')
     }
   }, 100)
 
-  // emit taskbar status to all clients
+  // consumer of taskbar status,
+  // emits taskbar status to all clients
   setInterval(() => {
     if (taskbarStatus === null) {
-      console.log('taskbar status not ready')
+      DEBUG && console.log('taskbar status not ready')
       return
     }
     // consume taskbar status
