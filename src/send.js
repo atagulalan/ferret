@@ -10,7 +10,7 @@ export function send(...commands) {
 
   for (let command of commands) {
     log.silly('Executing send command.')
-    log.silly(command)
+    log.debug(command)
     // convert main command
     const [mainCommand, ...args] = command.split(' ')
     const { command: convertedCommand, argConverter } =

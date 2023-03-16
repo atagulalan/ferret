@@ -9,67 +9,71 @@ const {
   MOVE_THRESHOLD
 } = CONFIG.TOUCHPAD
 
-const createTouchpad = ({ socket, element: touchpad }) => {
-  if (!touchpad) return
+export default {
+  data: {
+    touchStartEvent: null,
+    touchEndEvent: null,
+    touchMoveEvent: null
+  },
+  onCreate: function ({ socket, element: touchpad }) {
+    if (!touchpad) return
 
-  const moveCursor = ({ x, y }) => {
-    if (x || y) socket.emit(0, `movecursor ${x} ${y}`)
-  }
+    const moveCursor = ({ x, y }) => {
+      if (x || y) socket.emit(0, `movecursor ${x} ${y}`)
+    }
 
-  const FIRST_TOUCH = { x: 0, y: 0, timestamp: 0, index: -1 }
-  const CURRENT_TOUCH = { x: 0, y: 0 }
-  const LOGS = {
-    LAST_TAP_TIMESTAMP: 0,
-    LAST_TAP_POSITION: { x: 0, y: 0 },
-    DOUBLE_TAP_RECENTLY: false,
-    DOUBLE_TAP_TIMESTAMP: 0,
-    TAP_TIMEOUT: null
-  }
+    const FIRST_TOUCH = { x: 0, y: 0, timestamp: 0, index: -1 }
+    const CURRENT_TOUCH = { x: 0, y: 0 }
+    const LOGS = {
+      LAST_TAP_TIMESTAMP: 0,
+      LAST_TAP_POSITION: { x: 0, y: 0 },
+      DOUBLE_TAP_RECENTLY: false,
+      DOUBLE_TAP_TIMESTAMP: 0,
+      TAP_TIMEOUT: null
+    }
 
-  const reset = () => {
-    FIRST_TOUCH.x = CURRENT_TOUCH.x = FIRST_TOUCH.y = CURRENT_TOUCH.y = 0
-    FIRST_TOUCH.timestamp = 0
-    FIRST_TOUCH.index = -1
-  }
+    const reset = () => {
+      FIRST_TOUCH.x = CURRENT_TOUCH.x = FIRST_TOUCH.y = CURRENT_TOUCH.y = 0
+      FIRST_TOUCH.timestamp = 0
+      FIRST_TOUCH.index = -1
+    }
 
-  const checkIfDoubleTap = () => {
-    // get double click logs
-    const {
-      LAST_TAP_TIMESTAMP,
-      DOUBLE_TAP_RECENTLY,
-      LAST_TAP_POSITION,
-      TAP_TIMEOUT
-    } = LOGS
+    const checkIfDoubleTap = () => {
+      // get double click logs
+      const {
+        LAST_TAP_TIMESTAMP,
+        DOUBLE_TAP_RECENTLY,
+        LAST_TAP_POSITION,
+        TAP_TIMEOUT
+      } = LOGS
 
-    // if tap click recently, double click and hold
-    if (
-      LAST_TAP_TIMESTAMP + DOUBLE_TAP_BETWEEN_TAPS_DURATION > +new Date() &&
-      !DOUBLE_TAP_RECENTLY
-    ) {
-      // hypotenuse of the triangle
-      const hypotenuse = Math.sqrt(
-        Math.pow(FIRST_TOUCH.x - LAST_TAP_POSITION.x, 2) +
-          Math.pow(FIRST_TOUCH.y - LAST_TAP_POSITION.y, 2)
-      )
-      // time elapsed
-      const timeElapsed = +new Date() - LAST_TAP_TIMESTAMP
-
-      // check border conditions
+      // if tap click recently, double click and hold
       if (
-        hypotenuse < MAX_SECOND_TAP_DISTANCE &&
-        timeElapsed < MAX_SECOND_TAP_TIME
+        LAST_TAP_TIMESTAMP + DOUBLE_TAP_BETWEEN_TAPS_DURATION > +new Date() &&
+        !DOUBLE_TAP_RECENTLY
       ) {
-        send('mouse left down')
-        LOGS.DOUBLE_TAP_RECENTLY = true
-        LOGS.DOUBLE_TAP_TIMESTAMP = +new Date()
-        clearTimeout(TAP_TIMEOUT)
+        // hypotenuse of the triangle
+        const hypotenuse = Math.sqrt(
+          Math.pow(FIRST_TOUCH.x - LAST_TAP_POSITION.x, 2) +
+            Math.pow(FIRST_TOUCH.y - LAST_TAP_POSITION.y, 2)
+        )
+        // time elapsed
+        const timeElapsed = +new Date() - LAST_TAP_TIMESTAMP
+
+        // check border conditions
+        if (
+          hypotenuse < MAX_SECOND_TAP_DISTANCE &&
+          timeElapsed < MAX_SECOND_TAP_TIME
+        ) {
+          send('mouse left down')
+          LOGS.DOUBLE_TAP_RECENTLY = true
+          LOGS.DOUBLE_TAP_TIMESTAMP = +new Date()
+          clearTimeout(TAP_TIMEOUT)
+        }
       }
     }
-  }
 
-  touchpad.addEventListener(
-    'touchstart',
-    function (e) {
+    this.touchStartEvent = function (e) {
       e.preventDefault()
 
       // if touch already started, ignore
@@ -92,13 +96,9 @@ const createTouchpad = ({ socket, element: touchpad }) => {
       FIRST_TOUCH.index = touchIndex
 
       checkIfDoubleTap()
-    },
-    false
-  )
+    }
 
-  touchpad.addEventListener(
-    'touchmove',
-    function (e) {
+    this.touchMoveEvent = function (e) {
       e.preventDefault()
 
       // if no touch started, return
@@ -142,13 +142,9 @@ const createTouchpad = ({ socket, element: touchpad }) => {
 
       // move cursor
       moveCursor(diff)
-    },
-    false
-  )
+    }
 
-  touchpad.addEventListener(
-    'touchend',
-    function (e) {
+    this.touchEndEvent = function (e) {
       e.preventDefault()
 
       // if no touch started, return
@@ -195,9 +191,17 @@ const createTouchpad = ({ socket, element: touchpad }) => {
           y: FIRST_TOUCH.y
         }
       }
-    },
-    false
-  )
-}
+    }
 
-export default createTouchpad
+    // add event listeners
+    touchpad.addEventListener('touchstart', this.touchStartEvent)
+    touchpad.addEventListener('touchmove', this.touchMoveEvent)
+    touchpad.addEventListener('touchend', this.touchEndEvent)
+  },
+  onDestroy: function ({ element: touchpad }) {
+    // remove event listeners
+    touchpad.removeEventListener('touchstart', this.touchStartEvent)
+    touchpad.removeEventListener('touchmove', this.touchMoveEvent)
+    touchpad.removeEventListener('touchend', this.touchEndEvent)
+  }
+}

@@ -71,58 +71,92 @@ const createHiddenInput = () => {
   return input
 }
 
-const createKeyboard = ({ element: keyboard, block }) => {
-  keyboard.addEventListener('click', () => {
-    let lastKey = ''
+export default {
+  data: {
+    clickEvent: null,
+    focusEvent: null,
+    keyUpEvent: null,
+    inputEvent: null,
+    blurEvent: null,
+    input: null
+  },
+  onCreate: function ({ element: keyboard }) {
+    this.clickEvent = function () {
+      let lastKey = ''
 
-    // create and focus input element
-    const input = createHiddenInput()
+      // create and focus input element
+      const input = createHiddenInput()
+      this.input = input
 
-    // focus input element
-    input.focus()
-
-    const setLastKey = (target) => {
-      if (!target) target = input
-      // set caret position to end
-      target.selectionStart = target.selectionEnd = target.value.length
-      if (target.value) {
-        lastKey = target.value[target.value.length - 1]
+      this.focusEvent = function () {
+        // notify other blocks via event bus
+        bus.emit('keyboard-focus')
       }
-      // IF WE CLEAR INPUT VALUE HERE, IT LAGS
+      input.addEventListener('focus', this.focusEvent)
+
+      // focus input element
+      input.focus()
+
+      const setLastKey = (target) => {
+        if (!target) target = input
+        // set caret position to end
+        target.selectionStart = target.selectionEnd = target.value.length
+        if (target.value) {
+          lastKey = target.value[target.value.length - 1]
+        }
+        // IF WE CLEAR INPUT VALUE HERE, IT LAGS
+      }
+
+      const sendInput = () => {
+        if (!lastKey) return
+        if (METHOD === 'clipboard') clipboardMethod(lastKey)
+        else if (METHOD === 'virtualKeyCode') virtualKeyCodeMethod(lastKey)
+      }
+
+      // on input element keydown
+      this.keyUpEvent = function (event) {
+        let key = event.key
+        setLastKey()
+        if (key === 'Unidentified') {
+          input.value = ''
+          return
+        }
+        if (METHOD === 'clipboard') clipboardMethod(key)
+        else if (METHOD === 'virtualKeyCode') virtualKeyCodeMethod(key)
+      }
+      input.addEventListener('keyup', this.keyUpEvent)
+
+      this.inputEvent = function (event) {
+        setLastKey(event.target)
+        sendInput()
+      }
+      input.addEventListener('input', this.inputEvent)
+
+      // on input element blur
+      this.blurEvent = function () {
+        // notify other blocks via event bus
+        bus.emit('keyboard-blur')
+        // remove event listeners
+        input.removeEventListener('focus', this.focusEvent)
+        input.removeEventListener('keyup', this.keyUpEvent)
+        input.removeEventListener('input', this.inputEvent)
+        input.removeEventListener('blur', this.blurEvent)
+        this.input = null
+        // remove input element
+        document.body.removeChild(input)
+      }
+      input.addEventListener('blur', this.blurEvent)
     }
 
-    const sendInput = () => {
-      if (!lastKey) return
-      if (METHOD === 'clipboard') clipboardMethod(lastKey)
-      else if (METHOD === 'virtualKeyCode') virtualKeyCodeMethod(lastKey)
-    }
-
-    // on input element keydown
-    const keyDownEvent = input.addEventListener('keyup', (event) => {
-      let key = event.key
-      setLastKey()
-      if (key === 'Unidentified') {
-        input.value = ''
-        return
-      }
-      if (METHOD === 'clipboard') clipboardMethod(key)
-      else if (METHOD === 'virtualKeyCode') virtualKeyCodeMethod(key)
-    })
-
-    const inputEvent = input.addEventListener('input', (event) => {
-      setLastKey(event.target)
-      sendInput()
-    })
-
-    // on input element blur
-    input.addEventListener('blur', () => {
-      // remove event listeners
-      input.removeEventListener('keydown', keyDownEvent)
-      input.removeEventListener('input', inputEvent)
-      // remove input element
-      document.body.removeChild(input)
-    })
-  })
+    // add click event listener
+    keyboard.addEventListener('click', this.clickEvent)
+  },
+  onDestroy: function ({ element: keyboard }) {
+    // remove click event listener
+    keyboard.removeEventListener('click', this.clickEvent)
+    this.input?.removeEventListener('focus', this.focusEvent)
+    this.input?.removeEventListener('keyup', this.keyUpEvent)
+    this.input?.removeEventListener('input', this.inputEvent)
+    this.input?.removeEventListener('blur', this.blurEvent)
+  }
 }
-
-export default createKeyboard

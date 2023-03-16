@@ -31,7 +31,7 @@ export async function sendSync(...items) {
     const { command: convertedCommand, argConverter } =
       conversions[mainCommand] || {}
     log.silly('Executing sync command.')
-    log.silly(command)
+    log.debug(command)
     try {
       // change status
       commandQueue.find(({ id: i }) => i === id).status = 'executing'

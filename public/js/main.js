@@ -3,8 +3,13 @@ const socket = io({
   reconnection: true
 })
 
-// set global handler
+const activeBlocks = []
+
+// set global handlers
 window.socket = socket
+window.bus = function (...args) {
+  blocks.notify(...args)
+}
 
 import createButton from './blocks/button.js'
 import createTouchpad from './blocks/touchpad.js'
@@ -73,8 +78,13 @@ socket.on('load', ({ settings, username }) => {
   document.body.style.background = `${background}`
 
   const container = document.querySelector('#container')
+
+  // notify all blocks that all blocks will be destroyed
+  activeBlocks.forEach((block) => block.destroy())
+
   // clean up container
   container.innerHTML = ''
+
   // create grid
   const grid = createGrid(container, { designVertical, designHorizontal })
 
@@ -104,10 +114,20 @@ socket.on('load', ({ settings, username }) => {
     })
     // add element to control panel
     grid.appendChild(element)
-    // add functionality
-    BLOCKS[block.type]?.({ socket, element, block })
-    // TODO: add module missing alert
-    // TODO: module lifecycle hooks: onCreate, onDestroy
+
+    // module missing alert
+    if (!BLOCKS[block.type].onCreate) {
+      console.error(`${block.name || 'Block'} has no onCreate hook`)
+    }
+
+    // call onCreate hook
+    BLOCKS[block.type].onCreate?.({ socket, element, block })
+
+    activeBlocks.push({
+      name: block.name,
+      destroy: () => BLOCKS[block.type].onDestroy?.({ socket, element, block }),
+      notify: () => BLOCKS[block.type].on?.({ socket, element, block })
+    })
   })
 })
 
