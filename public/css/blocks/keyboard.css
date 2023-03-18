@@ -1,1 +1,21 @@
-/* No additional CSS required */
+.keyboard-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% + var(--keyboard-offset-left));
+  height: calc(100% + var(--keyboard-offset-top));
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 6vw;
+  transition: 0.2s width ease-out;
+  transition: 0.2s height ease-out;
+  backdrop-filter: blur(10px);
+  padding: 0 10vw;
+}

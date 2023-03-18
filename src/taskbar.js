@@ -1,5 +1,6 @@
 import { PowerShell } from 'node-powershell'
 import { log } from './log.js'
+import { sockets } from './connection.js'
 
 async function getForegroundWindow() {
   const foregroundShell = PowerShell.$`$code = @'
@@ -47,7 +48,7 @@ export async function getTaskbar(ignoredProcessNames) {
   }
 }
 
-export function initTaskbarInterval({ sockets, ignoredProcessNames }) {
+export function initTaskbarInterval({ ignoredProcessNames }) {
   let stillRunning = false
   let taskbarStatus = null
 

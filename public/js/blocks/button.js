@@ -6,19 +6,12 @@ document.addEventListener('touchstart', function () {}, false)
 // right click context menu fix
 document.addEventListener('contextmenu', (event) => event.preventDefault())
 
-export default {
+export default () => ({
   data: {
     touchStartEvent: null,
     touchEndEvent: null
   },
-  on: {
-    keyboardFocus: function () {
-      console.log('keyboard focus', this.element)
-    },
-    keyboardBlur: function () {
-      console.log('keyboard blur')
-    }
-  },
+
   onCreate: function ({ element: button, block }) {
     // add touch event listener
     this.touchStartEvent = function () {
@@ -62,4 +55,4 @@ export default {
     button.removeEventListener('touchstart', this.touchStartEvent)
     button.removeEventListener('touchend', this.touchEndEvent)
   }
-}
+})

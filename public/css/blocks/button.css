@@ -13,9 +13,9 @@ button {
   transition: 0.2s background ease-in-out, 0.2s transform;
   text-rendering: optimizeLegibility;
   text-align: center;
-  aspect-ratio: 1;
   overflow: hidden;
   box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
+  padding: var(--button-padding-y) var(--button-padding-x);
 }
 
 button:active {
@@ -29,11 +29,11 @@ button span {
   width: 100%;
   text-align: center;
   font-family: 'Poppins', sans-serif;
+  font-weight: 600;
   font-size: var(--button-text-size);
   line-height: var(--button-text-size);
   height: var(--button-text-size);
   padding: 0 var(--button-text-padding);
-  font-weight: 600;
   color: var(--button-color);
   word-break: break-word;
   margin-bottom: calc(var(--button-text-size) * 0.7);

@@ -1,6 +1,6 @@
 const { TYPE } = CONFIG.TASKBAR
 
-export default {
+export default () => ({
   data: {
     taskbarEvent: null,
     changeEvent: null,
@@ -85,4 +85,4 @@ export default {
     taskbar.removeEventListener('focus', this.focusEvent)
     taskbar.removeEventListener('blur', this.blurEvent)
   }
-}
+})

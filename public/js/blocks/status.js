@@ -3,7 +3,7 @@ const { TYPE, ACTION } = CONFIG.STATUS
 const validTypes = ['pulsating', 'static', 'icon']
 const validStates = ['error', 'active', 'pending']
 
-export default {
+export default () => ({
   data: {
     connectEvent: null,
     disconnectEvent: null,
@@ -61,4 +61,4 @@ export default {
     // remove event listeners
     statusIcon.removeEventListener('click', this.clickEvent)
   }
-}
+})

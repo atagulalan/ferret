@@ -73,7 +73,22 @@ function creteElement(block, { isVertical, isHorizontal }) {
 }
 
 socket.on('load', ({ settings, username }) => {
-  console.log('Welcome,', username)
+  // create span for username
+  const highlightSpan = document.createElement('span')
+  highlightSpan.classList.add('highlight')
+  highlightSpan.appendChild(document.createTextNode(username))
+
+  const usernameSpan = document.createElement('span')
+  usernameSpan.id = 'username'
+  usernameSpan.appendChild(document.createTextNode('Welcome back, '))
+  usernameSpan.appendChild(highlightSpan)
+  usernameSpan.appendChild(document.createTextNode('!'))
+
+  // clear spacer
+  document.querySelector('#spacer').innerHTML = ''
+
+  // add username to spacer
+  document.querySelector('#spacer').appendChild(usernameSpan)
 
   const { blocks, designVertical, designHorizontal, background } = settings
   // set background
@@ -120,28 +135,26 @@ socket.on('load', ({ settings, username }) => {
     // add element to control panel
     grid.appendChild(element)
 
+    const currentBlock = BLOCKS[block.type]?.()
+
     // module missing alert
-    if (!BLOCKS[block.type].onCreate) {
+    if (!currentBlock?.onCreate) {
       console.error(`${block.name || 'Block'} has no onCreate hook`)
     }
 
     // call onCreate hook
-    BLOCKS[block.type].onCreate?.({ socket, element, block })
+    currentBlock.onCreate?.({ socket, element, block })
 
-    // be careful, eval is evil
-    const bindKeys = ['socket', 'element', 'block']
-
-    bindKeys.forEach((key) => {
-      // sanitize key
-      key = key.replace(/[^a-zA-Z0-9_]/g, '')
-      BLOCKS[block.type][key] = eval(key)
-      if (BLOCKS[block.type].on) BLOCKS[block.type].on[key] = eval(key)
-    })
+    // sanitize key
+    currentBlock.element = element
+    if (currentBlock.on) {
+      currentBlock.on.element = element
+    }
 
     activeBlocks.push({
       name: block.name,
-      destroy: () => BLOCKS[block.type].onDestroy?.({ socket, element, block }),
-      notify: (key, ...args) => BLOCKS[block.type].on?.[key]?.(...args)
+      destroy: () => currentBlock.onDestroy?.({ socket, element, block }),
+      notify: (key, ...args) => currentBlock.on?.[key]?.(...args)
     })
   })
 })

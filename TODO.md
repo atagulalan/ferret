@@ -7,15 +7,18 @@
 - [x] Auto reload on settings change
 - [x] Running application focus
   - [ ] Minimize, maximize, close?
-- [ ] Vertical and horizontal buttons, not only square ones
-- [ ] Use PC username to greet user on mobile
-- [ ] Remove node_modules from build
+  - [ ] Foreground application fix
+  - [ ] Custom select option
+- [x] Keyboard aware modules
+- [x] Vertical and horizontal buttons, not only square ones
+- [x] Use PC username to greet user on mobile
 - [ ] Two finger scroll
 - [ ] Active application modules
-- [ ] Block Editor
 - [ ] Joystick-like cursor movement
 - [ ] Multi-button
 - [ ] Slider (Something like screen brightness)
 - [ ] PWA Install
   - [ ] Offline mod indicator
   - [ ] Auto detect new IP
+- [ ] Remove node_modules from build
+- [ ] Block Editor

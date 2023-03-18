@@ -9,12 +9,13 @@ const {
   MOVE_THRESHOLD
 } = CONFIG.TOUCHPAD
 
-export default {
+export default () => ({
   data: {
     touchStartEvent: null,
     touchEndEvent: null,
     touchMoveEvent: null
   },
+
   onCreate: function ({ socket, element: touchpad }) {
     if (!touchpad) return
 
@@ -204,4 +205,4 @@ export default {
     touchpad.removeEventListener('touchmove', this.touchMoveEvent)
     touchpad.removeEventListener('touchend', this.touchEndEvent)
   }
-}
+})

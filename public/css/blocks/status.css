@@ -1,12 +1,4 @@
 #status {
-  grid-area: var(--name);
-  width: 100%;
-  height: auto;
-  background: var(--button-background);
-  color: var(--button-color);
-  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
-  border-radius: var(--button-radius);
-  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,9 +7,10 @@
 #status .indicator,
 #status .indicator:after {
   width: 32%;
-  height: 32%;
+  height: auto;
   border-radius: 50%;
   display: block;
+  aspect-ratio: 1;
 }
 
 #status .indicator.pulsating:after {

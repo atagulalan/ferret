@@ -1,8 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import { log } from './log.js'
+import { sockets } from './connection.js'
 
-export function initWatchSettings({ sockets, ferretFolder }) {
+export function initWatchSettings({ ferretFolder }) {
   // Look for settings.json changes
   fs.watchFile(path.resolve(ferretFolder, './settings.json'), (curr, prev) => {
     if (curr.mtime !== prev.mtime) {
