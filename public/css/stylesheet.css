@@ -83,6 +83,9 @@ body {
   align-items: flex-start;
   padding: 0 var(--grid-padding-x);
   font-size: 6vw;
+  transition: 0.2s transform ease-out;
+  transform: translate(var(--keyboard-offset-left), var(--keyboard-offset-top))
+    scale(var(--keyboard-scale));
 }
 
 #container {
