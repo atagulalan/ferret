@@ -12,6 +12,7 @@
 - [x] Keyboard aware modules
 - [x] Vertical and horizontal buttons, not only square ones
 - [x] Use PC username to greet user on mobile
+- [x] Remove node_modules from build
 - [ ] Two finger scroll
 - [ ] Active application modules
 - [ ] Joystick-like cursor movement
@@ -20,5 +21,4 @@
 - [ ] PWA Install
   - [ ] Offline mod indicator
   - [ ] Auto detect new IP
-- [ ] Remove node_modules from build
 - [ ] Block Editor

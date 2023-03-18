@@ -8,21 +8,21 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "delete": "del-cli ./dist",
-    "build": "nexe -r ./{node_modules,assets,public}/**/* --build --ico public\\favicon.ico -o ./dist/ferret.exe index.js",
-    "compress": "build_tools\\upx\\upx ./dist/ferret.exe",
-    "release": "npm run delete && npm run build && npm run compress"
+    "rollup": "rollup -c",
+    "package": "node compile.js",
+    "compress": "build_tools\\upx\\upx ./dist/ferret.exe -qqq -7",
+    "build": "npm run rollup && npm run package",
+    "release": "npm run build && npm run compress"
   },
   "dependencies": {
-    "cli-table": "^0.3.1",
-    "express": "^4.16.3",
-    "node-gyp": "^9.3.1",
+    "cli-table": "^0.3.11",
+    "express": "^4.18.2",
     "node-powershell": "^5.0.1",
     "qrcode-terminal": "^0.12.0",
-    "socket.io": "^4.6.1",
-    "tasklist": "^5.0.0"
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
-    "del-cli": "^5.0.0"
+    "nexe": "^4.0.0-rc.2",
+    "rollup": "^3.19.1"
   }
 }

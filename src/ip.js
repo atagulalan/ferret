@@ -5,7 +5,7 @@ import Table from 'cli-table'
 const interfaces = os.networkInterfaces()
 const table = new Table()
 
-export function showIPs(port) {
+function showIPs(port) {
   Object.keys(interfaces).forEach(function (interfaceName) {
     interfaces[interfaceName].forEach(function (iface) {
       if ('IPv4' !== iface.family || iface.internal !== false) {
@@ -27,3 +27,5 @@ export function showIPs(port) {
   })
   console.log(table.toString())
 }
+
+export { showIPs }

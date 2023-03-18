@@ -1,11 +1,8 @@
-import util from 'util'
-import { execFile } from 'child_process'
 import conversions from '../conversions.js'
 import { log } from './log.js'
-// promisify execFile
-const run = util.promisify(execFile)
+import { run } from './run.js'
 
-export function send(...commands) {
+function send(...commands) {
   if (commands.every((command) => !command)) return
 
   for (let command of commands) {
@@ -19,10 +16,12 @@ export function send(...commands) {
     try {
       const eCmd = convertedCommand || mainCommand
       const eArgs = argConverter ? argConverter(...args) : args
-      run('./win32/nircmd.exe', [eCmd, ...eArgs])
+      run('nircmd', [eCmd, ...eArgs])
     } catch (error) {
       // An error ocurred attempting to execute the script
       log.error('Send command failed.', error)
     }
   }
 }
+
+export { send }

@@ -28,7 +28,7 @@ async function getActiveWindows(ignoredProcessNames) {
     }))
 }
 
-export async function getTaskbar(ignoredProcessNames) {
+async function getTaskbar(ignoredProcessNames) {
   try {
     const start = performance.now()
     const [foreground, items] = await Promise.all([
@@ -48,7 +48,7 @@ export async function getTaskbar(ignoredProcessNames) {
   }
 }
 
-export function initTaskbarInterval({ ignoredProcessNames }) {
+function initTaskbarInterval({ ignoredProcessNames }) {
   let stillRunning = false
   let taskbarStatus = null
 
@@ -78,3 +78,5 @@ export function initTaskbarInterval({ ignoredProcessNames }) {
     taskbarStatus = null
   }, 1000)
 }
+
+export { initTaskbarInterval }

@@ -1,7 +1,7 @@
 import { PowerShell } from 'node-powershell'
 import { log } from './log.js'
 
-export async function getUsername() {
+async function getUsername() {
   try {
     const usernameShell = PowerShell.$`[System.Environment]::UserName`
     const username = (await usernameShell).raw
@@ -11,3 +11,5 @@ export async function getUsername() {
     return ''
   }
 }
+
+export { getUsername }

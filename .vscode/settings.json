@@ -1,0 +1,37 @@
+{
+  "cSpell.words": [
+    "APPDATA",
+    "capslock",
+    "changesysvolume",
+    "hwnd",
+    "leftmenu",
+    "loadclp",
+    "lwin",
+    "nexe",
+    "nircmd",
+    "numlock",
+    "pagedown",
+    "pageup",
+    "printscreen",
+    "qrcode",
+    "rightmenu",
+    "rwin",
+    "saveclp",
+    "sendkey",
+    "sendkeypress",
+    "sendmouse"
+  ],
+  "files.exclude": {
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/Thumbs.db": false,
+    "**/node_modules": false,
+    "**/.vscode": false,
+    "**/.nuxt": false,
+    "**/.gitignore": false,
+    "**/package-lock.json": false
+  }
+}

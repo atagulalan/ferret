@@ -59,7 +59,7 @@ export default () => ({
         // home, end, insert, delete, pageup, pagedown,
         // plus, comma, minus, period,
         // lwin, rwin(Windows key), apps,
-        // tab, multiply, add, subtract, seperator,
+        // tab, multiply, add, subtract, separator,
         // divide, backspace, pause, capslock, numlock, scroll, printscreen.
         ' ': 'spc',
         '+': 'plus',

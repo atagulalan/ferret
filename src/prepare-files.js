@@ -3,7 +3,7 @@ import fs from 'fs'
 import { log } from './log.js'
 import { initWatchSettings } from './watch-settings.js'
 
-export function prepareFiles() {
+function prepareFiles() {
   const ferretFolder = path.resolve(process.env.APPDATA, './ferret/')
   if (!fs.existsSync(path.resolve(ferretFolder))) {
     log.warn(
@@ -30,6 +30,9 @@ export function prepareFiles() {
     )
   }
 
+  // change working directory to ferret folder
+  process.chdir(ferretFolder)
+
   initWatchSettings({ ferretFolder })
 
   return {
@@ -38,3 +41,5 @@ export function prepareFiles() {
     )
   }
 }
+
+export { prepareFiles }

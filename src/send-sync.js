@@ -1,14 +1,11 @@
-import util from 'util'
-import { execFile } from 'child_process'
 import conversions from '../conversions.js'
 import { log } from './log.js'
-// promisify execFile
-const run = util.promisify(execFile)
+import { run } from './run.js'
 
 let executeLock = false
 const commandQueue = []
 
-export function addToQueue(...commands) {
+function sendSync(...commands) {
   commands.forEach((command, i) => {
     commandQueue.push({
       status: 'pending',
@@ -18,7 +15,7 @@ export function addToQueue(...commands) {
   })
 }
 
-export async function sendSync(...items) {
+async function execute(...items) {
   if (items.every(({ command }) => !command)) return
 
   // if already looping through command queue, add to queue
@@ -37,7 +34,7 @@ export async function sendSync(...items) {
       commandQueue.find(({ id: i }) => i === id).status = 'executing'
       const eCmd = convertedCommand || mainCommand
       const eArgs = argConverter ? argConverter(...args) : args
-      await run('./win32/nircmd.exe', [eCmd, ...eArgs])
+      await run('nircmd', [eCmd, ...eArgs])
       log.silly('Sync command executed.')
       // remove from queue
       commandQueue.splice(
@@ -55,6 +52,8 @@ export async function sendSync(...items) {
 // loop through command queue
 setInterval(() => {
   if (!executeLock) {
-    sendSync(...commandQueue.filter(({ status }) => status === 'pending'))
+    execute(...commandQueue.filter(({ status }) => status === 'pending'))
   }
 }, 1)
+
+export { sendSync }
