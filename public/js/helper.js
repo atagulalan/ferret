@@ -26,6 +26,7 @@ function vibrate(options = { duration: 100, interval: 100, count: 1 }) {
 }
 
 function log(...args) {
+  if (!window.socket) return
   // send log to server
   socket.emit('log', ...args)
 }

@@ -9,16 +9,19 @@
   - [ ] Minimize, maximize, close?
   - [ ] Foreground application fix
   - [ ] Custom select option
+  - [ ] Active application modules
 - [x] Keyboard aware modules
 - [x] Vertical and horizontal buttons, not only square ones
 - [x] Use PC username to greet user on mobile
 - [x] Remove node_modules from build
 - [ ] Two finger scroll
-- [ ] Active application modules
-- [ ] Joystick-like cursor movement
 - [ ] Multi-button
 - [ ] Slider (Something like screen brightness)
-- [ ] PWA Install
-  - [ ] Offline mod indicator
-  - [ ] Auto detect new IP
+- [ ] Joystick-like cursor movement
 - [ ] Block Editor
+
+## Abandoned
+
+- [ ] PWA Install (This will be a separate app, PWA is not supported on local network)
+  - [ ] Auto redirect to saved local IP
+  - [ ] Auto detect new IP
