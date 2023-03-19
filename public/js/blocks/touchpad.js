@@ -23,7 +23,12 @@ export default () => ({
       if (x || y) socket.emit(0, `movecursor ${x} ${y}`)
     }
 
+    const scrollWheel = ({ x, y }) => {
+      if (x || y) socket.emit(0, `mouse wheel ${y * 10}`)
+    }
+
     const FIRST_TOUCH = { x: 0, y: 0, timestamp: 0, index: -1 }
+    const SECOND_TOUCH = { x: 0, y: 0, index: -1, initiated: false }
     const CURRENT_TOUCH = { x: 0, y: 0 }
     const LOGS = {
       LAST_TAP_TIMESTAMP: 0,
@@ -77,6 +82,17 @@ export default () => ({
     this.touchStartEvent = function (e) {
       e.preventDefault()
 
+      // if second (or nth) touch present, focus on it
+      if (e.targetTouches.length >= 2) {
+        const secondTouchIndex = e.targetTouches.length - 1
+        const secondTouch = e.targetTouches[secondTouchIndex]
+        SECOND_TOUCH.x = secondTouch.pageX
+        SECOND_TOUCH.y = secondTouch.pageY
+        SECOND_TOUCH.index = 1
+        SECOND_TOUCH.initiated = true
+        return
+      }
+
       // if touch already started, ignore
       if (FIRST_TOUCH.index > -1) return
 
@@ -104,6 +120,20 @@ export default () => ({
 
       // if no touch started, return
       if (FIRST_TOUCH.index === -1) return
+
+      // if second (or nth) touch present, scroll
+      if (SECOND_TOUCH.index !== -1) {
+        const secondTouch = e.targetTouches[SECOND_TOUCH.index]
+        const diff = {
+          x: secondTouch.pageX - SECOND_TOUCH.x,
+          y: secondTouch.pageY - SECOND_TOUCH.y
+        }
+        SECOND_TOUCH.x = secondTouch.pageX
+        SECOND_TOUCH.y = secondTouch.pageY
+        // scroll
+        scrollWheel(diff)
+        return
+      }
 
       // get touch position
       const touch = e.targetTouches[FIRST_TOUCH.index]
@@ -148,21 +178,41 @@ export default () => ({
     this.touchEndEvent = function (e) {
       e.preventDefault()
 
+      if (e.targetTouches.length >= 2) {
+        const lastTouchIndex = e.targetTouches.length - 1
+        const lastTouch = e.targetTouches[lastTouchIndex]
+        SECOND_TOUCH.x = lastTouch.pageX
+        SECOND_TOUCH.y = lastTouch.pageY
+        SECOND_TOUCH.index = lastTouchIndex
+        SECOND_TOUCH.initiated = true
+      }
+
+      // if second touch initiated, reset when all fingers are off the screen
+      if (e.targetTouches.length === 1 && SECOND_TOUCH.initiated) {
+        return
+      }
+
       // if no touch started, return
       if (FIRST_TOUCH.index === -1) return
 
       // stop moving
       FIRST_TOUCH.index = -1
 
-      const { DOUBLE_TAP_RECENTLY, DOUBLE_TAP_TIMESTAMP } = LOGS
+      if (SECOND_TOUCH.initiated && e.targetTouches.length === 0) {
+        SECOND_TOUCH.index = -1
+        SECOND_TOUCH.x = SECOND_TOUCH.y = 0
+        SECOND_TOUCH.initiated = false
+      } else {
+        const { DOUBLE_TAP_RECENTLY, DOUBLE_TAP_TIMESTAMP } = LOGS
 
-      // if double click recently, release
-      if (DOUBLE_TAP_RECENTLY) {
-        send('mouse left up')
-        if (DOUBLE_TAP_TIMESTAMP + DOUBLE_TAP_HOLD_DURATION > +new Date())
-          send('mouse left click')
-        LOGS.DOUBLE_TAP_RECENTLY = false
-        return reset()
+        // if double click recently, release
+        if (DOUBLE_TAP_RECENTLY) {
+          send('mouse left up')
+          if (DOUBLE_TAP_TIMESTAMP + DOUBLE_TAP_HOLD_DURATION > +new Date())
+            send('mouse left click')
+          LOGS.DOUBLE_TAP_RECENTLY = false
+          return reset()
+        }
       }
 
       // if some of the fingers are still on the screen,

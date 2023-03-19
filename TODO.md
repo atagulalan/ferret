@@ -14,7 +14,7 @@
 - [x] Vertical and horizontal buttons, not only square ones
 - [x] Use PC username to greet user on mobile
 - [x] Remove node_modules from build
-- [ ] Two finger scroll
+- [x] Two finger scroll
 - [ ] Multi-button
 - [ ] Slider (Something like screen brightness)
 - [ ] Joystick-like cursor movement
