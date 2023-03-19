@@ -72,7 +72,10 @@ function creteElement(block, { isVertical, isHorizontal }) {
   return element
 }
 
-socket.on('load', ({ settings, username }) => {
+function initWelcome(username) {
+  const spacer = document.querySelector('#spacer')
+  if (!spacer) return
+
   // create span for username
   const highlightSpan = document.createElement('span')
   highlightSpan.classList.add('highlight')
@@ -85,16 +88,21 @@ socket.on('load', ({ settings, username }) => {
   usernameSpan.appendChild(document.createTextNode('!'))
 
   // clear spacer
-  document.querySelector('#spacer').innerHTML = ''
+  spacer.innerHTML = ''
 
   // add username to spacer
-  document.querySelector('#spacer').appendChild(usernameSpan)
+  spacer.appendChild(usernameSpan)
+}
+
+function initGrid(settings) {
+  const container = document.querySelector('#container')
+  if (!container) return
 
   const { blocks, designVertical, designHorizontal, background } = settings
   // set background
   document.body.style.background = `${background}`
 
-  const container = document.querySelector('#container')
+  if (!container) return
 
   // notify all blocks that all blocks will be destroyed
   activeBlocks.forEach((block) => block.destroy())
@@ -157,6 +165,11 @@ socket.on('load', ({ settings, username }) => {
       notify: (key, ...args) => currentBlock.on?.[key]?.(...args)
     })
   })
+}
+
+socket.on('load', ({ settings, username }) => {
+  initWelcome(username)
+  initGrid(settings)
 })
 
 socket.connect()
