@@ -55,6 +55,12 @@ You can connect this address with your phone's browser and start moving your cur
 
 Have fun!
 
+## Settings File
+
+You can change settings by editing settings.json file. If no settings.json file is found, it'll create one with default settings in AppData.
+
+Ferret prioritizes settings.json file in the same directory as the executable. If it can't find one, it'll use the one in AppData.
+
 ## Debug Levels
 
 You can change debug level by changing "debug" variable in settings.json file.

@@ -15,6 +15,8 @@
 - [x] Use PC username to greet user on mobile
 - [x] Remove node_modules from build
 - [x] Two finger scroll
+- [ ] Latency indicator
+- [ ] Mouse middle click
 - [ ] Multi-button
 - [ ] Slider (Something like screen brightness)
 - [ ] Joystick-like cursor movement

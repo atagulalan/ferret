@@ -1,35 +1,34 @@
 const { METHOD } = CONFIG.KEYBOARD
 
 export default () => ({
-  data: {
-    clickEvent: null,
-    focusEvent: null,
-    keyUpEvent: null,
-    inputEvent: null,
-    blurEvent: null,
-    input: null,
-    viewportEvent: null
-  },
   on: {
-    keyboardFocus: function () {
-      // create backdrop to prevent additional click for blur
-      const backdrop = document.createElement('div')
-      backdrop.classList.add('keyboard-backdrop')
-
-      // append text
-      const text = document.createElement('span')
-      text.innerHTML = 'Keyboard active.<br />Click to close.'
-      backdrop.appendChild(text)
-
-      document.body.appendChild(backdrop)
-    },
-    keyboardBlur: function () {
-      // remove backdrop
-      const backdrop = document.querySelector('.keyboard-backdrop')
-      if (backdrop) backdrop.remove()
+    viewportSizeChange: function ({ offsetTop }) {
+      // if keyboard is closed and we are on shortcut page, go back to last page
+      log(this, offsetTop)
+      const currentPage = pageHistory.get()
+      if (offsetTop === '0px' && currentPage.name === 'keyboard') {
+        pageHistory.back()
+      }
     }
+    // keyboardFocus: function () {
+    //   // create backdrop to prevent additional click for blur
+    //   const backdrop = document.createElement('div')
+    //   backdrop.classList.add('keyboard-backdrop')
+
+    //   // append text
+    //   const text = document.createElement('span')
+    //   text.innerHTML = 'Keyboard active.<br />Click to close.'
+    //   backdrop.appendChild(text)
+
+    //   document.body.appendChild(backdrop)
+    // },
+    // keyboardBlur: function () {
+    //   // remove backdrop
+    //   const backdrop = document.querySelector('.keyboard-backdrop')
+    //   if (backdrop) backdrop.remove()
+    // }
   },
-  onCreate: function ({ element: keyboard }) {
+  onCreate: function ({ element, type }) {
     const clipboardMethod = (key) => {
       const noClipboardKeys = {
         ' ': 'spc',
@@ -69,7 +68,6 @@ export default () => ({
         '/': 'divide',
         '*': 'multiply'
       }
-      // todo need better way to handle shift
       if (key.toUpperCase() === key) {
         sendSync(
           'key shift down',
@@ -102,38 +100,6 @@ export default () => ({
       return input
     }
 
-    let pendingUpdate = false
-
-    this.viewportEvent = function viewportHandler(event) {
-      if (pendingUpdate) return
-      pendingUpdate = true
-
-      requestAnimationFrame(() => {
-        pendingUpdate = false
-        const layoutViewport = document.body
-
-        // Since the bar is position: fixed we need to offset it by the
-        // visual viewport's offset from the layout viewport origin.
-        const viewport = event.target
-        const offsetLeft = viewport.offsetLeft
-        const offsetTop =
-          viewport.height -
-          layoutViewport.getBoundingClientRect().height +
-          viewport.offsetTop
-
-        // set property to body to use in css
-        document.body.style.setProperty(
-          '--keyboard-offset-left',
-          offsetLeft + 'px'
-        )
-        document.body.style.setProperty(
-          '--keyboard-offset-top',
-          offsetTop + 'px'
-        )
-        document.body.style.setProperty('--keyboard-scale', 1 / viewport.scale)
-      })
-    }
-
     this.clickEvent = function () {
       let lastKey = ''
 
@@ -143,7 +109,7 @@ export default () => ({
 
       this.focusEvent = function () {
         // notify other blocks via event bus
-        bus.emit('keyboardFocus')
+        eventBus.emit('keyboardFocus')
       }
       input.addEventListener('focus', this.focusEvent)
 
@@ -188,7 +154,7 @@ export default () => ({
       // on input element blur
       this.blurEvent = function () {
         // notify other blocks via event bus
-        bus.emit('keyboardBlur')
+        eventBus.emit('keyboardBlur')
         // remove event listeners
         input.removeEventListener('focus', this.focusEvent)
         input.removeEventListener('keyup', this.keyUpEvent)
@@ -197,14 +163,22 @@ export default () => ({
         this.input = null
         // remove input element
         document.body.removeChild(input)
+
+        // go last page if shortcut
+        if (type === 'shortcut' && pageHistory.get().name === 'keyboard') {
+          pageHistory.back()
+        }
       }
       input.addEventListener('blur', this.blurEvent)
     }
 
+    if (type !== 'shortcut') {
+      // no need to create, already created
+      element.classList.add('button')
+    }
+
     // add click event listener
-    keyboard.addEventListener('click', this.clickEvent)
-    window.visualViewport.addEventListener('scroll', this.viewportEvent)
-    window.visualViewport.addEventListener('resize', this.viewportEvent)
+    element.addEventListener('click', this.clickEvent)
   },
   onDestroy: function ({ element: keyboard }) {
     // remove click event listener
@@ -213,7 +187,5 @@ export default () => ({
     this.input?.removeEventListener('keyup', this.keyUpEvent)
     this.input?.removeEventListener('input', this.inputEvent)
     this.input?.removeEventListener('blur', this.blurEvent)
-    window.visualViewport.removeEventListener('scroll', this.viewportEvent)
-    window.visualViewport.removeEventListener('resize', this.viewportEvent)
   }
 })

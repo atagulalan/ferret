@@ -22,7 +22,10 @@ function prepareFiles() {
   }
 
   // export settings.json to root folder if it doesn't exist
-  if (!fs.existsSync(path.resolve(ferretFolder, './settings.json'))) {
+  if (
+    !fs.existsSync(path.resolve('./settings.json')) &&
+    !fs.existsSync(path.resolve(ferretFolder, './settings.json'))
+  ) {
     log.debug('Creating settings.json file.')
     fs.writeFileSync(
       path.resolve(ferretFolder, './settings.json'),
@@ -30,16 +33,11 @@ function prepareFiles() {
     )
   }
 
+  const initialWorkingDirectory = process.cwd()
   // change working directory to ferret folder
   process.chdir(ferretFolder)
 
-  initWatchSettings({ ferretFolder })
-
-  return {
-    settings: JSON.parse(
-      fs.readFileSync(path.resolve(ferretFolder, './settings.json'), 'utf8')
-    )
-  }
+  initWatchSettings({ initialWorkingDirectory, ferretFolder })
 }
 
 export { prepareFiles }

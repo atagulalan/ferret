@@ -11,14 +11,18 @@
     <meta name="theme-color" content="#000" />
     <link rel="manifest" href="manifest.json" />
     <title>Ferret</title>
+    <link rel="stylesheet" href="css/stylesheet.css" />
     <script src="js/socket.io.min.js"></script>
     <script src="js/config.js"></script>
+    <script src="js/scroll-snap.js"></script>
     <script src="js/helper.js"></script>
     <script src="js/main.js" type="module"></script>
-    <link rel="stylesheet" href="css/stylesheet.css" />
   </head>
   <body>
-    <div id="spacer"></div>
-    <div id="container"></div>
+    <div id="app">
+      <div id="toolbar"></div>
+      <div id="root"></div>
+      <div id="navigation"></div>
+    </div>
   </body>
 </html>

@@ -1,49 +1,23 @@
-#touchpad {
-  grid-area: var(--name);
+.block[data-name='touchpad'] {
   width: 100%;
-  height: auto;
-  background: var(--button-background);
-  aspect-ratio: 4 / 3;
-  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
-  border-radius: var(--button-radius);
-  background-image: url(/ferret.png);
-  background-size: 10%;
-  background-repeat: no-repeat;
-  background-position: calc(100% - 12px) 100%;
-  filter: grayscale(100%);
+  grid-area: var(--name);
+  background: var(--touchpad-background);
+  aspect-ratio: var(--touchpad-aspect-ratio);
+  border-radius: var(--touchpad-radius);
 }
 
-.touchpad-button {
+.block[data-name='touchpad-left'],
+.block[data-name='touchpad-right'] {
   height: var(--touchpad-button-size);
-  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
-  display: flex;
-  justify-content: right;
-  align-items: center;
+  justify-content: center;
+  align-items: end;
+  padding: 0;
 }
 
-.touchpad-button:before,
-.touchpad-button:after {
-  content: '';
-  display: block;
-  width: var(--touchpad-button-icon-size);
-  background: var(--button-background);
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  margin-left: calc(var(--touchpad-button-icon-size) * 2);
-  aspect-ratio: 1;
-}
-
-.touchpad-button:after {
-  margin-left: calc(var(--touchpad-button-icon-size) / 2);
-  margin-right: calc(var(--touchpad-button-icon-size) * 2);
-}
-
-.touchpad-button.left:before {
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-.touchpad-button.right:after {
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.4);
+.block[data-name='touchpad-left'] i,
+.block[data-name='touchpad-right'] i {
+  font-size: var(--touchpad-button-icon-size);
+  padding: 0 var(--touchpad-button-icon-padding);
+  color: var(--touchpad-button-icon-color);
+  margin-bottom: 0;
 }

@@ -1,20 +1,19 @@
 #taskbar {
   grid-area: var(--name);
   width: 100%;
-  height: 16vw;
+  height: 16vmin;
   background-color: var(--button-background);
   color: var(--button-color);
-  font-family: 'Poppins';
-  font-weight: 600;
+  font-family: var(--default-font-family), sans-serif;
+  font-weight: var(--default-font-weight);
   border: none;
   border-radius: var(--button-radius);
-  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
   -webkit-appearance: none;
   -moz-appearance: none;
   text-indent: 1px;
   text-overflow: '';
-  padding: 0 4vw;
-  font-size: 4vw;
+  padding: 0 4vmin;
+  font-size: 4vmin;
 }
 
 #taskbar::-ms-expand {

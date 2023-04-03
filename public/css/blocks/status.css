@@ -1,11 +1,15 @@
-#status {
+.block[data-name='status'] {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#status .indicator,
-#status .indicator:after {
+.block[data-name='status'] i {
+  margin-top: var(--button-icon-padding);
+}
+
+.block[data-name='status'] .indicator,
+.block[data-name='status'] .indicator:after {
   width: 32%;
   height: auto;
   border-radius: 50%;
@@ -13,7 +17,7 @@
   aspect-ratio: 1;
 }
 
-#status .indicator.pulsating:after {
+.block[data-name='status'] .indicator.pulsating:after {
   content: '';
   width: 100%;
   height: 100%;
@@ -22,22 +26,22 @@
   animation: pulse 4s ease-out infinite;
 }
 
-#status .indicator.active,
-#status .indicator.active:after {
+.block[data-name='status'] .indicator.active,
+.block[data-name='status'] .indicator.active:after {
   background-color: #3eef67;
 }
-#status .indicator.pending,
-#status .indicator.pending:after {
+.block[data-name='status'] .indicator.pending,
+.block[data-name='status'] .indicator.pending:after {
   background-color: #ffe435;
 }
-#status .indicator.error,
-#status .indicator.error:after {
+.block[data-name='status'] .indicator.error,
+.block[data-name='status'] .indicator.error:after {
   background-color: #eb4a41;
 }
 
 @keyframes pulse {
   22% {
-    transform: scale(4);
+    transform: scale(3);
   }
   25% {
     opacity: 0;

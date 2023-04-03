@@ -1,0 +1,33 @@
+#toolbar {
+  height: var(--toolbar-height);
+  line-height: var(--toolbar-height);
+  font-size: 1.2rem;
+  font-family: var(--default-font-family), sans-serif;
+  font-weight: var(--default-font-weight);
+  display: flex;
+  background-color: var(--toolbar-background);
+  background-image: url(/ferret.png);
+  background-size: var(--toolbar-logo-size);
+  background-repeat: no-repeat;
+  background-position: var(--toolbar-left-padding) 50%;
+  justify-content: end;
+}
+
+#toolbar .block {
+  height: 100%;
+  width: auto;
+  padding: 0;
+  aspect-ratio: 1;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16pt;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  container-type: size;
+}

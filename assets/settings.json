@@ -1,93 +1,278 @@
 {
-  "background": "#050505",
   "debug": "debug",
-  "designVertical": [
-    "taskbar taskbar taskbar taskbar",
-    "volume-down volume-up keyboard status",
-    "previous next play discord-mute",
-    "touchpad touchpad touchpad touchpad",
-    "mouse-left mouse-left mouse-right mouse-right"
-  ],
-  "designHorizontal": [
-    "volume-down volume-up keyboard status",
-    "previous next play discord-mute"
-  ],
-  "blocks": [
+  "ignoredProcessNames": ["Rainmeter", "NVIDIA Share"],
+  "pages": [
     {
-      "name": "taskbar",
-      "type": "taskbar",
-      "id": "taskbar",
-      "tag": "select"
-    },
-    {
-      "name": "status",
-      "type": "status",
-      "id": "status",
-      "tag": "button"
-    },
-    {
-      "name": "keyboard",
-      "type": "keyboard",
-      "id": "keyboard",
-      "tag": "button",
-      "icon": "bxs-keyboard",
-      "text": "Keyboard"
-    },
-    {
-      "name": "volume-down",
-      "command": "volume -1",
-      "repeatInterval": 20,
-      "icon": "bx-volume-low",
-      "text": "Lower"
-    },
-    {
-      "name": "volume-up",
-      "command": "volume 1",
-      "repeatInterval": 20,
-      "icon": "bx-volume-full",
-      "text": "Higher"
-    },
-    {
-      "name": "discord-mute",
-      "command": "press alt+x",
-      "icon": "bx-microphone-off",
-      "text": "Mute"
-    },
-    {
-      "name": "previous",
-      "command": "press left",
-      "icon": "bxs-chevrons-left",
-      "text": "Rewind"
-    },
-    {
-      "name": "next",
-      "command": "press right",
-      "icon": "bxs-chevrons-right",
-      "text": "Forward"
-    },
-    {
-      "name": "play",
-      "command": "press spc",
-      "icon": "bx-pause",
-      "text": "Pause"
+      "name": "cards",
+      "id": "cards",
+      "icon": "iconoir-rhombus",
+      "text": "Blocks",
+      "type": "cards",
+      "cards": [
+        {
+          "name": "watch",
+          "title": "Watch",
+          "designVertical": [
+            "volume-down volume-up",
+            "previous next",
+            "discord-mute play"
+          ],
+          "designHorizontal": [
+            "volume-down volume-up keyboard status",
+            "previous next play discord-mute"
+          ],
+          "blocks": [
+            {
+              "name": "taskbar",
+              "type": "taskbar",
+              "id": "taskbar",
+              "tag": "select"
+            },
+            {
+              "name": "status",
+              "type": "status",
+              "id": "status",
+              "tag": "button"
+            },
+            {
+              "name": "volume-down",
+              "command": "press down",
+              "repeatInterval": 20,
+              "icon": "iconoir-sound-low",
+              "text": "Lower"
+            },
+            {
+              "name": "volume-up",
+              "command": "press up",
+              "repeatInterval": 20,
+              "icon": "iconoir-sound-high",
+              "text": "Higher"
+            },
+            {
+              "name": "discord-mute",
+              "command": "press alt+x",
+              "icon": "iconoir-mic-mute",
+              "text": "Mute"
+            },
+            {
+              "name": "previous",
+              "command": "press left",
+              "icon": "iconoir-rewind",
+              "text": "Rewind"
+            },
+            {
+              "name": "next",
+              "command": "press right",
+              "icon": "iconoir-forward",
+              "text": "Forward"
+            },
+            {
+              "name": "play",
+              "command": "press space",
+              "icon": "iconoir-play",
+              "text": "Play/Pause"
+            }
+          ]
+        },
+        {
+          "name": "media-control",
+          "title": "Media Control",
+          "design": [
+            "previous next",
+            "stop play",
+            "volume-down volume-up",
+            "volume-mute ."
+          ],
+          "blocks": [
+            {
+              "name": "next",
+              "command": "press 0xb0",
+              "icon": "iconoir-skip-next",
+              "text": "Next Track"
+            },
+            {
+              "name": "previous",
+              "command": "press 0xb1",
+              "icon": "iconoir-skip-prev",
+              "text": "Previous Track"
+            },
+            {
+              "name": "stop",
+              "command": "press 0xb2",
+              "icon": "iconoir-square",
+              "text": "Stop"
+            },
+            {
+              "name": "play",
+              "command": "press 0xb3",
+              "icon": "iconoir-play",
+              "text": "Play/Pause"
+            },
+            {
+              "name": "volume-down",
+              "command": "press 0xae",
+              "repeatInterval": 20,
+              "icon": "iconoir-sound-low",
+              "text": "Volume Down"
+            },
+            {
+              "name": "volume-up",
+              "repeatInterval": 20,
+              "command": "press 0xaf",
+              "icon": "iconoir-sound-high",
+              "text": "Volume Up"
+            },
+            {
+              "name": "volume-mute",
+              "command": "press 0xad",
+              "icon": "iconoir-sound-min",
+              "text": "Mute"
+            }
+          ]
+        },
+        {
+          "name": "system",
+          "title": "System",
+          "design": [
+            "cut copy",
+            "paste enter",
+            "esc screenshot",
+            "windows alt-tab"
+          ],
+          "blocks": [
+            {
+              "name": "windows",
+              "command": "press 0x5b",
+              "icon": "iconoir-windows",
+              "text": "Windows Key"
+            },
+            {
+              "name": "alt-tab",
+              "command": "press lwin+tab",
+              "icon": "iconoir-multi-window",
+              "text": "Switch Window"
+            },
+            {
+              "name": "screenshot",
+              "command": "press lwin+shift+s",
+              "icon": "iconoir-screenshot",
+              "text": "Screenshot"
+            },
+            {
+              "name": "cut",
+              "command": "press leftctrl+x",
+              "icon": "iconoir-scissor",
+              "text": "Cut"
+            },
+            {
+              "name": "copy",
+              "command": "press leftctrl+c",
+              "icon": "iconoir-copy",
+              "text": "Copy"
+            },
+            {
+              "name": "paste",
+              "command": "press leftctrl+v",
+              "icon": "iconoir-paste-clipboard",
+              "text": "Paste"
+            },
+            {
+              "name": "enter",
+              "command": "press enter",
+              "icon": "iconoir-send",
+              "text": "Enter"
+            },
+            {
+              "name": "esc",
+              "command": "press esc",
+              "icon": "iconoir-delete-circle",
+              "text": "Esc"
+            }
+          ]
+        },
+        {
+          "name": "browser",
+          "title": "Browser",
+          "design": ["google nyaa", "youtube twitter"],
+          "blocks": [
+            {
+              "name": "google",
+              "command": "shexec open https://google.com",
+              "icon": "iconoir-google",
+              "text": "Open Google",
+              "background": "#fff",
+              "color": "#000"
+            },
+            {
+              "name": "nyaa",
+              "command": "shexec open https://nyaa.si",
+              "icon": "iconoir-data-transfer-down",
+              "text": "Open Nyaa"
+            },
+            {
+              "name": "youtube",
+              "command": "shexec open https://youtube.com",
+              "icon": "iconoir-youtube",
+              "text": "Open Youtube",
+              "background": "#ff0000",
+              "color": "#fff"
+            },
+            {
+              "name": "twitter",
+              "command": "shexec open https://twitter.com",
+              "icon": "iconoir-twitter",
+              "text": "Open Twitter",
+              "background": "#1da1f2",
+              "color": "#000"
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "touchpad",
-      "type": "touchpad",
       "id": "touchpad",
-      "tag": "div"
+      "icon": "iconoir-pc-mouse",
+      "text": "Touchpad",
+      "type": "cards",
+      "cards": [
+        {
+          "name": "touchpad",
+          "title": "Touchpad",
+          "design": ["touchpad touchpad", "mouse-left mouse-right"],
+          "align": "bottom",
+          "blocks": [
+            {
+              "name": "touchpad",
+              "type": "touchpad",
+              "id": "touchpad",
+              "tag": "div"
+            },
+            {
+              "name": "mouse-left",
+              "commandDown": "mouse left down",
+              "commandUp": "mouse left up",
+              "class": "touchpad-button left",
+              "icon": "iconoir-mouse-button-left"
+            },
+            {
+              "name": "mouse-right",
+              "commandDown": "mouse right down",
+              "commandUp": "mouse right up",
+              "class": "touchpad-button right",
+              "icon": "iconoir-mouse-button-right"
+            }
+          ]
+        }
+      ]
     },
     {
-      "name": "mouse-left",
-      "commandDown": "mouse left down",
-      "commandUp": "mouse left up",
-      "class": "touchpad-button left"
-    },
-    {
-      "name": "mouse-right",
-      "commandDown": "mouse right down",
-      "commandUp": "mouse right up",
-      "class": "touchpad-button right"
+      "name": "keyboard",
+      "id": "keyboard",
+      "icon": "iconoir-fluorine",
+      "text": "Keyboard",
+      "type": "shortcut",
+      "shortcut": "keyboard"
     }
   ]
 }

@@ -19,7 +19,8 @@
     "saveclp",
     "sendkey",
     "sendkeypress",
-    "sendmouse"
+    "sendmouse",
+    "iconoir"
   ],
   "files.exclude": {
     "**/.git": false,

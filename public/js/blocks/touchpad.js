@@ -10,12 +10,6 @@ const {
 } = CONFIG.TOUCHPAD
 
 export default () => ({
-  data: {
-    touchStartEvent: null,
-    touchEndEvent: null,
-    touchMoveEvent: null
-  },
-
   onCreate: function ({ socket, element: touchpad }) {
     if (!touchpad) return
 

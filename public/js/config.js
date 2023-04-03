@@ -17,6 +17,7 @@ const CONFIG = {
   },
   // BUTTON is used to configure button behavior
   BUTTON: {
+    ACTIVE_CLASS_DELAY: 100, // delay before active class is added. this is to prevent active class from being added when scrolling
     REPEAT_INITIAL_DELAY: 400 // button hold delay before repeat starts
   },
   // KEYBOARD is used to configure keyboard behavior
@@ -38,13 +39,6 @@ const CONFIG = {
     // 'reconnect' will reconnect the socket
     // reload is more reliable but will reload the page
     ACTION: 'reload'
-  },
-  // TASKBAR is used to configure taskbar behavior
-  TASKBAR: {
-    // type can be 'button' or 'select'
-    // 'button' will show a button
-    // 'select' will show a select
-    TYPE: 'select'
   }
 }
 

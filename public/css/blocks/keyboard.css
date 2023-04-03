@@ -1,6 +1,6 @@
 .keyboard-backdrop {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: calc(100% + var(--keyboard-offset-left));
   height: calc(100% + var(--keyboard-offset-top));
@@ -11,11 +11,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 6vw;
+  font-family: var(--default-font-family), sans-serif;
+  font-weight: var(--default-font-weight);
+  font-size: 6vmin;
   transition: 0.2s width ease-out;
   transition: 0.2s height ease-out;
-  backdrop-filter: blur(10px);
   padding: 0 10vw;
 }

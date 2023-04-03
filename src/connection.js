@@ -7,6 +7,9 @@ import { log } from './log.js'
 import { sendSync } from './send-sync.js'
 import { send } from './send.js'
 
+import { settings } from './watch-settings.js'
+import { sendTaskbar } from './taskbar.js'
+
 const PORT = process.env.PORT || 4540
 const sockets = []
 
@@ -24,12 +27,13 @@ const INDEX = path.join(getPublicDirectory())
 const server = express().use(express.static(INDEX)).listen(PORT)
 const io = new Server(server)
 
-function initSocketListener({ settings, username }) {
+function initSocketListener({ username }) {
   io.on('connection', function (socket) {
     log.info('Ferret connected.')
     socket.emit('load', { settings, username })
     socket.on(0, send)
     socket.on(1, sendSync)
+    socket.on(2, sendTaskbar)
     socket.on('log', (...args) => log.debug(...args))
     socket.on('disconnect', () => {
       sockets.splice(sockets.indexOf(socket), 1)

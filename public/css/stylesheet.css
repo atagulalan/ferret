@@ -1,61 +1,120 @@
-@import url('boxicons.min.css');
+@import url('iconoir.css');
 @import url('blocks/button.css');
 @import url('blocks/touchpad.css');
 @import url('blocks/keyboard.css');
 @import url('blocks/status.css');
 @import url('blocks/taskbar.css');
+@import url('blocks/search.css');
+@import url('toolbar.css');
+@import url('page.css');
+@import url('navigation.css');
 
 @font-face {
-  font-family: 'Poppins';
+  font-family: 'Wix Madefor Text';
   font-style: normal;
-  font-weight: 600;
-  src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+  src: url('/fonts/WixMadeforText.ttf') format('truetype');
 }
 
 :root {
-  --greeting-color: #fff;
-  --accent-color: #3eef67;
+  /* General */
+  --background-color: #000;
 
-  --grid-row-gap: 3vw;
-  --grid-column-gap: 3vw;
-  --grid-padding-x: 3vw;
-  --grid-padding-y: 6vw;
+  /* Font */
+  --default-font-family: 'Wix Madefor Text';
+  --default-font-weight: 600;
 
-  --button-icon-size: 8vw;
-  --button-text-size: 2.7vw;
-  --button-text-padding: 0.8vw;
-  --button-border-width: 2px;
-  --button-border-color: rgba(255, 255, 255, 0.05);
-  --button-radius: 2vmin;
-  --button-color: rgba(255, 255, 255, 0.4);
-  --button-background: rgba(255, 255, 255, 0.12);
-  --button-active-background: rgba(255, 255, 255, 0.2);
-  --button-padding-x: 0;
-  --button-padding-y: 2.7vw;
+  /* Grid */
+  --grid-row-gap: 3vmin;
+  --grid-column-gap: 3vmin;
+  --grid-padding-x: 3.6vmin;
+  --grid-padding-y: 0;
 
-  --touchpad-button-size: 16vw;
-  --touchpad-button-icon-size: 2vw;
+  /* Gradient Effect */
+  --gradient-spacer-height: 5vh;
 
+  /* Toolbar */
+  --toolbar-background: #000;
+  --toolbar-height: min(16vmin, 60px);
+  --toolbar-left-padding: min(8vmin, 30px);
+  --toolbar-logo-size: min(10vmin, 50px);
+
+  /* Card Titles */
+  --card-titles-background: #000;
+  --card-titles-left-padding: min(8vmin, 30px);
+  /* Card Title */
+  --card-title-color-rgb: 255, 255, 255;
+  --card-title-padding-right: 12vmin;
+  --card-title-font-size: min(7.4vmin, 40px);
+  --card-title-minimum-opacity: 0.4;
+
+  /* Navigation */
+  --navigation-background: #000;
+  --navigation-height: min(24vmin, 100px);
+  /* Navigation Button */
+  --navigation-button-padding-bottom: 34cqh;
+  --navigation-button-color: #ffffff55;
+  --navigation-button-active-color: #ffffff;
+  /* Navigation Button Icon */
+  --navigation-button-icon-size: 40cqh;
+  --navigation-button-icon-padding: 10cqh;
+  /* Navigation Button Text */
+  --navigation-button-font-size: 15cqh;
+
+  /* Button */
+  --button-radius: 8vw;
+  --button-color: #ffffff;
+  --button-background: #191919;
+  --button-inline-padding: 0 8cqw;
+  /* Button Active */
+  --button-active-scale: 1.05;
+  --button-active-brightness: 0.1;
+  /* Button Icon */
+  --button-icon-size: 25cqh;
+  --button-icon-padding: 10cqh;
+  /* Button Text */
+  --button-text-size: 12cqh;
+  --button-text-padding: 0;
+
+  /* Touchpad */
+  --touchpad-radius: var(--button-radius);
+  --touchpad-background: var(--button-background);
+  --touchpad-aspect-ratio: 4 / 3;
+  /* Touchpad Button */
+  --touchpad-button-size: 14vmin;
+  --touchpad-button-icon-size: 8vmin;
+  --touchpad-button-icon-padding: 3vmin;
+  --touchpad-button-icon-color: #ffffff44;
+
+  /* Keyboard */
   --keyboard-offset-left: 0px;
   --keyboard-offset-top: 0px;
   --keyboard-scale: 1;
+  --app-pointer-events: auto;
 }
 
-.highlight {
-  color: var(--accent-color);
+html {
+  /* Adjust font size */
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  /* Font variant */
+  font-variant-ligatures: none;
+  -webkit-font-variant-ligatures: none;
+  /* Smoothing */
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--background-color);
 }
 
 body {
   margin: 0;
-  overflow-y: auto;
   height: 100dvh;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  background-color: #000;
+  background-color: var(--background-color);
   background-size: cover !important;
+  overflow: hidden;
 }
 
 * {
@@ -72,32 +131,29 @@ body {
   outline: none !important;
 }
 
-#spacer {
+#app {
+  /* Virtual Keyboard Scroll Fix */
+  transition: 0.2s transform ease-out;
+  transform: translate(var(--keyboard-offset-left), var(--keyboard-offset-top))
+    scale(var(--keyboard-scale));
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: var(--app-pointer-events);
+}
+
+.spacer {
   flex: 1 1 auto;
-  color: var(--greeting-color);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 0 var(--grid-padding-x);
-  font-size: 6vw;
-  transition: 0.2s transform ease-out;
-  transform: translate(var(--keyboard-offset-left), var(--keyboard-offset-top))
-    scale(var(--keyboard-scale));
 }
 
-#container {
-  display: flex;
-  transition: 0.2s transform ease-out;
-  transform: translate(var(--keyboard-offset-left), var(--keyboard-offset-top))
-    scale(var(--keyboard-scale));
+#root {
+  height: calc(100% - var(--toolbar-height));
 }
 
-#grid {
+.grid {
   overflow: visible;
-  width: 100vw;
+  width: 100%;
   position: relative;
   display: grid;
   column-gap: var(--grid-column-gap);
@@ -106,29 +162,37 @@ body {
   align-content: center;
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
+  padding-bottom: calc(
+    var(--gradient-spacer-height) + var(--navigation-height)
+  );
+  padding-top: var(--gradient-spacer-height);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  -webkit-appearance: none;
 }
 
 /* media query for vertical screens */
 @media (orientation: portrait) {
-  #grid > *:not([data-vertical]) {
-    display: none;
+  .grid > *:not([data-vertical]) {
+    display: none !important;
   }
-  #grid {
+  .grid {
     grid-template-areas: var(--design-vertical);
   }
 }
 
 /* media query for horizontal screens */
 @media (orientation: landscape) {
-  #grid > *:not([data-horizontal]) {
-    display: none;
+  :root {
+    --button-inline-padding: 4cqw;
+    --button-radius: 4vw;
   }
-  #grid {
+  .grid > *:not([data-horizontal]) {
+    display: none !important;
+  }
+  .grid {
     grid-template-areas: var(--design-horizontal);
   }
-}
-
-i {
-  padding-top: calc(0.175 * var(--button-icon-size));
-  padding-left: calc(0.05 * var(--button-icon-size));
 }

@@ -1,6 +1,7 @@
 import { PowerShell } from 'node-powershell'
 import { log } from './log.js'
 import { sockets } from './connection.js'
+import { settings } from './watch-settings.js'
 
 async function getForegroundWindow() {
   const foregroundShell = PowerShell.$`$code = @'
@@ -48,35 +49,11 @@ async function getTaskbar(ignoredProcessNames) {
   }
 }
 
-function initTaskbarInterval({ ignoredProcessNames }) {
-  let stillRunning = false
-  let taskbarStatus = null
-
-  // after taskbar status is retrieved, run again indefinitely
-  setInterval(async () => {
-    // if taskbar status is consumed, get new status
-    if (!taskbarStatus && !stillRunning) {
-      stillRunning = true
-      taskbarStatus = await getTaskbar(ignoredProcessNames)
-      stillRunning = false
-      log.silly(`Taskbar info got in ${taskbarStatus.time}ms!\r\n`)
-    } else {
-      // loading dots
-      if (stillRunning) log.silly('Waiting for taskbar info...')
-    }
-  }, 100)
-
-  // consumer of taskbar status,
-  // emits taskbar status to all clients
-  setInterval(() => {
-    if (taskbarStatus === null) {
-      log.warn('Taskbar status not ready.')
-      return
-    }
-    // consume taskbar status
-    sockets.forEach((socket) => socket.emit('taskbar', taskbarStatus))
-    taskbarStatus = null
-  }, 1000)
+function sendTaskbar() {
+  const ignoredProcessNames = settings.ignoredProcessNames
+  sockets.forEach(async (socket) =>
+    socket.emit('taskbar', await getTaskbar(ignoredProcessNames))
+  )
 }
 
-export { initTaskbarInterval }
+export { sendTaskbar }

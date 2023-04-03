@@ -4,11 +4,6 @@ const validTypes = ['pulsating', 'static', 'icon']
 const validStates = ['error', 'active', 'pending']
 
 export default () => ({
-  data: {
-    connectEvent: null,
-    disconnectEvent: null,
-    clickEvent: null
-  },
   onCreate: function ({ socket, element: statusIcon }) {
     const showStatusIndicator = (status) => {
       if (!validTypes.includes(TYPE))
@@ -21,11 +16,10 @@ export default () => ({
 
       if (TYPE === 'icon') {
         const icon = document.createElement('i')
-        icon.classList.add('bx')
         if (status === 'error') {
-          icon.classList.add('bx-unlink')
+          icon.classList.add('iconoir-wifi-off')
         } else if (status === 'active') {
-          icon.classList.add('bx-link')
+          icon.classList.add('iconoir-link')
         }
         statusIcon.appendChild(icon)
       } else if (TYPE === 'pulsating' || TYPE === 'static') {
@@ -52,6 +46,8 @@ export default () => ({
       if (ACTION === 'reload') window.location.reload()
       else if (ACTION === 'reconnect') socket.connect()
     }
+
+    statusIcon.classList.add('button')
     statusIcon.addEventListener('click', this.clickEvent)
   },
   onDestroy: function ({ socket, element: statusIcon }) {

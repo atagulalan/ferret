@@ -1,12 +1,4 @@
-const { TYPE } = CONFIG.TASKBAR
-
 export default () => ({
-  data: {
-    taskbarEvent: null,
-    changeEvent: null,
-    focusEvent: null,
-    blurEvent: null
-  },
   onCreate: function ({ socket, element: taskbar }) {
     let isTaskbarActive = false
 
@@ -40,9 +32,6 @@ export default () => ({
       taskbar.value = value
     }
 
-    // TODO use type from config
-    console.log('type', TYPE)
-
     // listen for items change
     this.taskbarEvent = function ({ foreground, items }) {
       // if taskbar is active, do not update
@@ -64,6 +53,9 @@ export default () => ({
 
     // on taskbar focus
     this.focusEvent = function () {
+      // TODO: should wait for items to be loaded
+      // TODO: this is not working for now
+      sendTaskbarRequest()
       isTaskbarActive = true
     }
 
