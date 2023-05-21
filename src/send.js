@@ -6,8 +6,7 @@ function send(...commands) {
   if (commands.every((command) => !command)) return
 
   for (let command of commands) {
-    log.silly('Executing send command.')
-    log.debug(command)
+    log.silly('Executing send command.', command)
     // convert main command
     const [mainCommand, ...args] = command.split(' ')
     const { command: convertedCommand, argConverter } =

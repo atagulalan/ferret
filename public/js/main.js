@@ -395,16 +395,25 @@ function initToolbar({ toolbar }) {
   })
 }
 
+function setGlobalStyleVariables({ globalStyleVariables }) {
+  if (!globalStyleVariables) return
+  Object.entries(globalStyleVariables).forEach(([key, value]) => {
+    // set document variables
+    document.documentElement.style.setProperty(`--${key}`, value)
+  })
+}
+
 socket.on('load', ({ settings, username }) => {
   console.log(username)
 
-  // init managers
-  initErrorManager()
   initPageHistoryManager({ setActivePage, setActiveNavigation })
   initCardTitleManager()
   initBlockManager()
   initEventBus()
   initViewportEventManager()
+
+  // set global style variables
+  setGlobalStyleVariables(settings)
 
   // remove all blocks
   blockManager.removeAll()

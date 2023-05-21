@@ -3,7 +3,9 @@
     "APPDATA",
     "capslock",
     "changesysvolume",
+    "hideexec",
     "hwnd",
+    "iconoir",
     "leftmenu",
     "loadclp",
     "lwin",
@@ -20,7 +22,8 @@
     "sendkey",
     "sendkeypress",
     "sendmouse",
-    "iconoir"
+    "toastify",
+    "traybin"
   ],
   "files.exclude": {
     "**/.git": false,

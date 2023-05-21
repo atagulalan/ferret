@@ -1,6 +1,6 @@
 import util from 'util'
 import path from 'path'
-import { execFile } from 'child_process'
+import { execFile, spawn } from 'child_process'
 
 // promisify execFile
 const execPromise = util.promisify(execFile)
@@ -20,4 +20,12 @@ function run(command, args) {
   })
 }
 
-export { run }
+function bring(command, args) {
+  return spawn(command, args, {
+    cwd: ferretFolder,
+    detached: true,
+    stdio: ['ignore', 'pipe', 'ignore']
+  })
+}
+
+export { run, bring }

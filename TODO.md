@@ -21,6 +21,8 @@
 - [ ] Slider (Something like screen brightness)
 - [ ] Joystick-like cursor movement
 - [ ] Block Editor
+- [ ] iOS Keyboard Error
+- [ ] Tray Reload IPs Option
 
 ## Abandoned
 

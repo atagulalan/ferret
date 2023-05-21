@@ -13,18 +13,30 @@ import { sendTaskbar } from './taskbar.js'
 const PORT = process.env.PORT || 4540
 const sockets = []
 
-const getPublicDirectory = () => {
+const getThisDirectory = () => {
   try {
-    return path.join(__dirname, './public')
+    return __dirname
   } catch (e) {
-    return path.join(path.dirname(fileURLToPath(import.meta.url)), '../public')
+    return path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
   }
 }
 
-const INDEX = path.join(getPublicDirectory())
+const getPublicDirectory = () => {
+  return path.join(getThisDirectory(), './public')
+}
+
+const getSessionDirectory = () => {
+  return path.resolve(process.env.APPDATA, './ferret/', './session')
+}
+
+const PUBLIC = path.join(getPublicDirectory())
+const SESSION = path.join(getSessionDirectory())
 
 // Start server
-const server = express().use(express.static(INDEX)).listen(PORT)
+const server = express()
+  .use(express.static(PUBLIC))
+  .use(express.static(SESSION))
+  .listen(PORT)
 const io = new Server(server)
 
 function initSocketListener({ username }) {
@@ -42,7 +54,7 @@ function initSocketListener({ username }) {
     sockets.push(socket)
   })
 
-  return { PORT }
+  return { port: PORT }
 }
 
 export { initSocketListener, sockets }

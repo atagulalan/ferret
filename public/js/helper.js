@@ -58,15 +58,6 @@ function sendTaskbarRequest() {
   socket.emit(2)
 }
 
-function initErrorManager() {
-  // if any error occurs, send error to server
-  window.onerror = function (message, source, lineno, colno, error) {
-    if (error) {
-      log(error)
-    }
-  }
-}
-
 function initTextFragmentHelper() {
   // if text fragment is present, update url
   const textFragment = performance

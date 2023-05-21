@@ -12,19 +12,19 @@
     <link rel="manifest" href="manifest.json" />
     <title>Ferret</title>
     <link rel="stylesheet" href="css/stylesheet.css" />
-    <script src="js/toastify.js"></script>
-    <script src="js/error-handler.js"></script>
-    <script src="js/socket.io.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/scroll-snap.js"></script>
-    <script src="js/helper.js"></script>
-    <script src="js/main.js" type="module"></script>
   </head>
   <body>
-    <div id="app">
-      <div id="toolbar"></div>
-      <div id="root"></div>
-      <div id="navigation"></div>
-    </div>
-  </body>
-</html>
+    <script>
+      // after loading the page, scroll pre to bottom
+      window.onload = function() {
+        var pre = document.getElementsByTagName("pre")[0];
+        pre.scrollTop = pre.scrollHeight;
+      };
+    </script>
+    <img
+      src="./ferret.png"
+      alt="Ferret"
+      width="50px"
+      style="margin: 20px auto 0"
+    />
+    <pre style="height:100%;overflow:auto;margin: 0 auto 20px;width: fit-content;"><code>
