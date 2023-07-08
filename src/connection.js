@@ -1,5 +1,4 @@
 import path from 'path'
-import { fileURLToPath } from 'url'
 import { Server } from 'socket.io'
 import express from 'express'
 
@@ -9,20 +8,13 @@ import { send } from './send.js'
 
 import { settings } from './watch-settings.js'
 import { sendTaskbar } from './taskbar.js'
+import { getDirname } from './asset-manager.js'
 
 const PORT = process.env.PORT || 4540
 const sockets = []
 
-const getThisDirectory = () => {
-  try {
-    return __dirname
-  } catch (e) {
-    return path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
-  }
-}
-
 const getPublicDirectory = () => {
-  return path.join(getThisDirectory(), './public')
+  return path.join(getDirname(), './public')
 }
 
 const getSessionDirectory = () => {

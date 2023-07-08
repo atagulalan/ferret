@@ -3,8 +3,9 @@ import fs from 'fs'
 import path from 'path'
 import child_process from 'child_process'
 import { log } from './log.js'
+import { getDirname, readAsset } from './asset-manager.js'
 
-function showSystemTray(initialWorkingDirectory, { ips, port }) {
+function showSystemTray({ ips, port }) {
   const startupFolder = path.resolve(
     process.env.APPDATA,
     './Microsoft/Windows/Start Menu/Programs/Startup/'
@@ -12,7 +13,7 @@ function showSystemTray(initialWorkingDirectory, { ips, port }) {
   const systray = new SysTray.default({
     menu: {
       icon: fs.readFileSync(
-        path.resolve(initialWorkingDirectory, './public/favicon.ico'),
+        path.resolve(getDirname(), './public/favicon.ico'),
         {
           encoding: 'base64'
         }
@@ -75,9 +76,7 @@ function showSystemTray(initialWorkingDirectory, { ips, port }) {
         if (!fs.existsSync(path.resolve('./settings.json'))) {
           fs.writeFileSync(
             path.resolve('./settings.json'),
-            fs.readFileSync(
-              path.resolve(initialWorkingDirectory, './assets/settings.json')
-            )
+            readAsset('settings.json')
           )
         }
         child_process.exec(`start ${path.resolve('./settings.json')}`)
@@ -101,9 +100,7 @@ function showSystemTray(initialWorkingDirectory, { ips, port }) {
             }
             fs.writeFileSync(
               path.resolve(startupFolder, './Ferret.lnk'),
-              fs.readFileSync(
-                path.resolve(initialWorkingDirectory, './assets/Ferret.lnk')
-              )
+              readAsset('Ferret.lnk')
             )
           } catch (error) {
             log.error('Could not copy ferret to startup folder.', error)

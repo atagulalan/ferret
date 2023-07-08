@@ -15,6 +15,7 @@ export default {
     'os',
     'fs',
     'path',
-    'url'
+    'url',
+    'systray'
   ]
 }

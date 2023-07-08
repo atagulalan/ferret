@@ -1,6 +1,8 @@
 import { compile } from 'nexe'
 import fs from 'fs'
 
+console.log('Building with nexe')
+// not working
 compile({
   input: 'bundle.cjs',
   output: 'dist/ferret.exe',

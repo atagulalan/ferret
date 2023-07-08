@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { settings } from './watch-settings.js'
 
 let CURRENT_LEVEL = 3
 const DEBUG_LEVELS = {
@@ -24,6 +23,23 @@ function writeLog(...args) {
     '[DEBUG]': 'blue',
     '[SILLY]': 'gray'
   }
+
+  // check if output.html exists
+  if (
+    !fs.existsSync(
+      path.resolve(process.env.APPDATA, './ferret/session/output.html')
+    )
+  ) {
+    return
+  }
+
+  // if log is object, stringify it
+  args = args.map((arg) => {
+    if (typeof arg === 'object') {
+      return JSON.stringify(arg)
+    }
+    return arg
+  })
 
   fs.appendFileSync(
     path.resolve(process.env.APPDATA, './ferret/', './session/output.html'),
