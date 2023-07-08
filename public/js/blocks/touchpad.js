@@ -116,7 +116,7 @@ export default () => ({
       if (FIRST_TOUCH.index === -1) return
 
       // if second (or nth) touch present, scroll
-      if (SECOND_TOUCH.index !== -1) {
+      if (SECOND_TOUCH.index !== -1 && e.targetTouches[SECOND_TOUCH.index]) {
         const secondTouch = e.targetTouches[SECOND_TOUCH.index]
         const diff = {
           x: secondTouch.pageX - SECOND_TOUCH.x,

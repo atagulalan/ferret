@@ -15,7 +15,8 @@ compile({
     // we need this for systray
     './node_modules/systray/traybin/tray_windows_release.exe'
   ],
-  build: true
+  build: true,
+  verbose: true
 }).then(() => {
   // remove bundle.cjs
   fs.unlinkSync('bundle.cjs')
