@@ -5,11 +5,11 @@ import { log } from './log.js'
 import { settings } from './watch-settings.js'
 import { readAsset } from './asset-manager.js'
 
-async function installRoutine() {
+function installRoutine() {
   // if standalone is enabled, it means do not try to hide the console
   if (settings.standalone) {
     // do nothing
-    return
+    return true // is installed
   }
 
   // if hide console is not enabled, it means its on installation mode
@@ -29,14 +29,17 @@ async function installRoutine() {
     log.info('New version installed. Restarting...')
 
     // run hideexec.exe to hide the console
-    await bring('hideexec.exe', [
+    bring('hideexec.exe', [
       'ferret.exe',
       '--standalone',
       '--remove-installer',
       process.execPath
-    ])
-    // exit the process
-    process.exit()
+    ]).then(() => {
+      // exit the process
+      process.exit()
+    })
+
+    return false // is not installed yet, restarting...
   }
 
   // if hide console is enabled, it means its on normal mode.
@@ -64,6 +67,8 @@ async function installRoutine() {
       log.error('Cannot delete the original ferret.exe.')
     }
   }
+
+  return true
 }
 
 export { installRoutine }

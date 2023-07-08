@@ -10,13 +10,15 @@ import { installRoutine } from './src/install.js'
 async function init() {
   const initialWorkingDirectory = process.cwd()
   prepareFiles(initialWorkingDirectory)
-  installRoutine()
-  const { debug } = settings
-  setDebugLevel(debug || 'info')
-  const username = await getUsername()
-  let { port } = initSocketListener({ username })
-  let { ips } = showIPs(port)
-  showSystemTray({ ips, port })
+  const isInstalled = installRoutine()
+  if (isInstalled) {
+    const { debug } = settings
+    setDebugLevel(debug || 'info')
+    const username = await getUsername()
+    let { port } = initSocketListener({ username })
+    let { ips } = showIPs(port)
+    showSystemTray({ ips, port })
+  }
 }
 
 init()

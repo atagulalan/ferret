@@ -11,8 +11,9 @@ exe({
   properties: {
     FileDescription: 'Ferret',
     ProductName: 'Ferret',
-    LegalCopyright: 'atagulalan https://xava.me/',
-    OriginalFilename: 'ferret.exe'
+    LegalCopyright: `© ${new Date().getFullYear()} atagulalan`,
+    OriginalFilename: 'ferret.exe',
+    CompanyName: 'atagulalan'
   }
 }).then(() => {
   // remove bundle.cjs

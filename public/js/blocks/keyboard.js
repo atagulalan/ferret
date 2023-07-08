@@ -6,7 +6,7 @@ export default () => ({
       // if keyboard is closed and we are on shortcut page, go back to last page
       log(this, offsetTop)
       const currentPage = pageHistory.get()
-      if (offsetTop === '0px' && currentPage.name === 'keyboard') {
+      if (offsetTop === '0px' && currentPage?.name === 'keyboard') {
         pageHistory.back()
       }
     }
