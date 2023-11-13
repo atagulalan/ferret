@@ -7,6 +7,7 @@ import { sendSync } from './send-sync.js'
 import { send } from './send.js'
 
 import { settings } from './watch-settings.js'
+import { uploadFile } from './upload.js'
 import { sendTaskbar } from './taskbar.js'
 import { getDirname } from './asset-manager.js'
 
@@ -29,7 +30,9 @@ const server = express()
   .use(express.static(PUBLIC))
   .use(express.static(SESSION))
   .listen(PORT)
-const io = new Server(server)
+const io = new Server(server, {
+  maxHttpBufferSize: 1e10
+})
 
 function initSocketListener({ username }) {
   io.on('connection', function (socket) {
@@ -38,6 +41,7 @@ function initSocketListener({ username }) {
     socket.on(0, send)
     socket.on(1, sendSync)
     socket.on(2, sendTaskbar)
+    socket.on(3, uploadFile)
     socket.on('log', (...args) => log.debug(...args))
     socket.on('disconnect', () => {
       sockets.splice(sockets.indexOf(socket), 1)

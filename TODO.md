@@ -23,6 +23,7 @@
 - [ ] Block Editor
 - [ ] iOS Keyboard Error
 - [ ] Tray Reload IPs Option
+- [ ] Upload Module Settings
 
 ## Abandoned
 

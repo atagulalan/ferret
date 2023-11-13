@@ -6,6 +6,7 @@
 @import url('blocks/status.css');
 @import url('blocks/taskbar.css');
 @import url('blocks/search.css');
+@import url('blocks/upload.css');
 @import url('toolbar.css');
 @import url('page.css');
 @import url('navigation.css');
@@ -242,5 +243,28 @@ code {
   }
   .grid {
     grid-template-areas: var(--design-horizontal);
+  }
+}
+
+@media (aspect-ratio: 1/1) {
+  :root {
+    --toolbar-height: 0;
+    --navigation-height: 0;
+    --grid-padding-y: 40px;
+    --grid-padding-x: 46px;
+    --gradient-spacer-height: 20vw;
+  }
+
+  .card-titles-wrapper {
+    display: none;
+  }
+
+  #root .page .cards > section {
+    height: auto;
+    aspect-ratio: 1/1;
+  }
+
+  .grid {
+    padding-bottom: 50vw;
   }
 }

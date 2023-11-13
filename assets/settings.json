@@ -9,6 +9,11 @@
   },
   "toolbar": [
     {
+      "name": "upload",
+      "type": "upload",
+      "icon": "iconoir-upload"
+    },
+    {
       "name": "search",
       "type": "search",
       "icon": "iconoir-search"

@@ -58,6 +58,30 @@ function sendTaskbarRequest() {
   socket.emit(2)
 }
 
+function sendFiles(files, onProgress) {
+  if (!socket) return
+  const filesArr = Array.from(files)
+  const filesLength = filesArr.length
+  const singleFileUpload = (file) => {
+    if (!file) return
+    socket.emit(
+      3,
+      {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified
+      },
+      file,
+      () => {
+        singleFileUpload(filesArr.shift())
+        onProgress(100 - (filesArr.length / filesLength) * 100)
+      }
+    )
+  }
+  singleFileUpload(filesArr.shift())
+}
+
 function initTextFragmentHelper() {
   // if text fragment is present, update url
   const textFragment = performance

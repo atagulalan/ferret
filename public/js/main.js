@@ -14,6 +14,7 @@ import createKeyboard from './blocks/keyboard.js'
 import createStatusIcon from './blocks/status.js'
 import createTaskbar from './blocks/taskbar.js'
 import createSearch from './blocks/search.js'
+import createUpload from './blocks/upload.js'
 
 const { DEFAULT_BLOCK } = CONFIG
 
@@ -23,7 +24,8 @@ const BLOCKS = {
   keyboard: createKeyboard,
   status: createStatusIcon,
   taskbar: createTaskbar,
-  search: createSearch
+  search: createSearch,
+  upload: createUpload
 }
 
 function createGrid(container, { designVertical, designHorizontal }) {
