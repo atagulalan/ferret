@@ -11,9 +11,7 @@ compile({
     './{assets,public}/**/*',
     // i know this is weird, but it works. we don't need whole package,
     // we just need package.json files. this is a workaround.
-    './node_modules/{engine.io-parser,socket.io-parser}/package.json',
-    // we need this for systray
-    './node_modules/systray/traybin/tray_windows_release.exe'
+    './node_modules/{engine.io-parser,socket.io-parser}/package.json'
   ],
   build: true,
   verbose: true

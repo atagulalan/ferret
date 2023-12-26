@@ -20,7 +20,7 @@ function run(command, args) {
   })
 }
 
-function bring(command, args) {
+async function bring(command, args) {
   return spawn(command, args, {
     cwd: ferretFolder,
     detached: true,

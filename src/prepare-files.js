@@ -36,7 +36,12 @@ function prepareFiles(initialWorkingDirectory) {
   )
 
   //
-  ;['nircmd.exe', 'display-switch.exe', 'hideexec.exe'].forEach((file) => {
+  ;[
+    'nircmd.exe',
+    'display-switch.exe',
+    'hideexec.exe',
+    'tray_windows_release.exe'
+  ].forEach((file) => {
     // export nircmd.exe to win32 folder if it doesn't exist
     if (!fs.existsSync(path.resolve(ferretFolder, `./${file}`))) {
       log.debug(`Copying ${file} to ferret folder.`)

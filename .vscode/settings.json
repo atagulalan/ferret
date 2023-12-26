@@ -24,6 +24,7 @@
     "sendkey",
     "sendkeypress",
     "sendmouse",
+    "systray",
     "toastify",
     "traybin"
   ],
