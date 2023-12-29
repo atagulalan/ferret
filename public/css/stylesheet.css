@@ -81,6 +81,7 @@
   --touchpad-radius: var(--button-radius);
   --touchpad-background: var(--button-background);
   --touchpad-aspect-ratio: 4 / 3;
+  --touchpad-border-width: 1vmin;
   /* Touchpad Button */
   --touchpad-button-size: 14vmin;
   --touchpad-button-icon-size: 8vmin;

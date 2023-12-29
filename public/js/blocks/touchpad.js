@@ -10,8 +10,118 @@ const {
 } = CONFIG.TOUCHPAD
 
 export default () => ({
+  on: {
+    pageChange: function (page) {
+      if (!this.touchpadElement) return
+      if (!this.activeSocket) return
+
+      const touchpad = this.touchpadElement
+      if (page.name === 'touchpad') {
+        if (this.canvas) return
+        // add canvas to touchpad element
+        this.canvas = document.createElement('canvas')
+        this.canvas.width = touchpad.offsetWidth
+        this.canvas.height = touchpad.offsetHeight
+        touchpad.appendChild(this.canvas)
+        // get canvas context
+        const ctx = this.canvas.getContext('2d')
+
+        const updateCursorPosition = ({ x, y }) => {
+          if (!this.canvas) return
+          if (!ctx) return
+          const { screen_width, screen_height } = {
+            screen_width: window.store.get('width'),
+            screen_height: window.store.get('height')
+          }
+          const { relative_x, relative_y } = {
+            relative_x:
+              x - screen_width + this.canvas.width / 2 > 0
+                ? x - screen_width + this.canvas.width
+                : Math.min(x, this.canvas.width / 2),
+            relative_y:
+              y - screen_height + this.canvas.height / 2 > 0
+                ? y - screen_height + this.canvas.height
+                : Math.min(y, this.canvas.height / 2)
+          }
+          // draw cursor (+) in middle of canvas
+          ctx.beginPath()
+          ctx.arc(relative_x, relative_y, 10, 0, 2 * Math.PI)
+          ctx.strokeStyle = 'white'
+          ctx.lineWidth = 2
+          ctx.stroke()
+          ctx.beginPath()
+          ctx.moveTo(relative_x - 5, relative_y)
+          ctx.lineTo(relative_x + 5, relative_y)
+          ctx.moveTo(relative_x, relative_y - 5)
+          ctx.lineTo(relative_x, relative_y + 5)
+          ctx.strokeStyle = 'white'
+          ctx.lineWidth = 2
+          ctx.stroke()
+        }
+
+        const printToCanvas = (cursorPosition, chunk) => {
+          const blob = new Blob([chunk], { type: 'image/png' })
+          // to base64
+          const reader = new FileReader()
+          reader.readAsDataURL(blob)
+          reader.onloadend = () => {
+            if (!this.canvas) return
+            const base64data = reader.result
+            // draw image
+            const img = new Image()
+            img.onload = () => {
+              if (!this.canvas) return
+              // scale img to fit canvas
+              const scale = Math.min(
+                this.canvas.width / img.width,
+                this.canvas.height / img.height
+              )
+              const x = this.canvas.width / 2 - (img.width / 2) * scale
+              const y = this.canvas.height / 2 - (img.height / 2) * scale
+              ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+              ctx.drawImage(img, x, y, img.width * scale, img.height * scale)
+              updateCursorPosition(cursorPosition)
+            }
+            img.src = base64data
+          }
+        }
+
+        const onScreen = (cursorPosition, chunk) => {
+          if (!this.canvas) return
+          if (!ctx) return
+          if (!cursorPosition) return
+          // subroutine
+          printToCanvas(cursorPosition, chunk)
+        }
+
+        getCurrentScreen(
+          {
+            width: this.canvas.width,
+            height: this.canvas.height,
+            fps: this.fps,
+            screen_width: window.store.get('width'),
+            screen_height: window.store.get('height')
+          },
+          { repeat: true },
+          onScreen
+        )
+      } else {
+        // remove canvas from touchpad element
+        if (this.canvas) {
+          this.canvas.remove()
+          this.canvas = null
+          stopCurrentScreen()
+        }
+      }
+    }
+  },
   onCreate: function ({ socket, element: touchpad }) {
     if (!touchpad) return
+
+    // TODO: should be configurable
+    this.fps = 6
+    this.activeSocket = socket
+    this.touchpadElement = touchpad
 
     const moveCursor = ({ x, y }) => {
       if (x || y) socket.emit(0, `movecursor ${x} ${y}`)

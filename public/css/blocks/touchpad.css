@@ -4,6 +4,32 @@
   background: var(--touchpad-background);
   aspect-ratio: var(--touchpad-aspect-ratio);
   border-radius: var(--touchpad-radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.block[data-name='touchpad']:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  border-radius: var(--touchpad-radius);
+  box-shadow: inset 0 0 0 var(--touchpad-border-width)
+    var(--touchpad-background);
+}
+
+.block[data-name='touchpad'] canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  /* to fix overflow bug at corners */
+  border-radius: calc(var(--touchpad-radius) + var(--touchpad-border-width));
 }
 
 .block[data-name='touchpad-left'],

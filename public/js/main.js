@@ -1,6 +1,7 @@
 const socket = io({
   autoConnect: false,
-  reconnection: true
+  reconnection: true,
+  maxHttpBufferSize: 1e10
 })
 
 // set global handlers
@@ -224,6 +225,8 @@ function setActivePage({ name, index, card }) {
     }
   })
 
+  eventBus.emit('pageChange', { name, index, card })
+
   // update card title widths
   cardTitles.update('#root .page.active .card-titles .card-title')
 
@@ -405,9 +408,10 @@ function setGlobalStyleVariables({ globalStyleVariables }) {
   })
 }
 
-socket.on('load', ({ settings, username }) => {
-  console.log(username)
+socket.on('load', ({ settings, username, width, height }) => {
+  console.log(username, width, height)
 
+  initStore({ username, width, height })
   initPageHistoryManager({ setActivePage, setActiveNavigation })
   initCardTitleManager()
   initBlockManager()

@@ -4,8 +4,9 @@ import fs from 'fs'
 import { log } from './log.js'
 import { settings } from './watch-settings.js'
 import { readAsset } from './asset-manager.js'
+import { PowerShell } from 'node-powershell'
 
-function installRoutine() {
+async function installRoutine() {
   // if standalone is enabled, it means do not try to hide the console
   if (settings.standalone) {
     // do nothing
@@ -25,6 +26,17 @@ function installRoutine() {
       log.error(process.execPath)
       process.exit(1)
     }
+
+    // get desktop folder from powershell
+    const shell = PowerShell.$`(New-Object -ComObject Shell.Application).namespace(0x10).Self.Path`
+    const raw = (await shell).raw
+    console.log(raw)
+    // copy link to desktop
+    fs.writeFileSync(
+      // desktop folder
+      path.resolve(raw, 'Ferret.lnk'),
+      readAsset('Ferret.lnk')
+    )
 
     log.info('New version installed. Restarting...')
 
@@ -53,12 +65,7 @@ function installRoutine() {
     if (!fs.existsSync(path.resolve(caller))) {
       log.error('Caller does not exist. Continuing...')
     }
-    // copy link to desktop
-    fs.writeFileSync(
-      // desktop folder
-      path.resolve(process.env.USERPROFILE, './Desktop/Ferret.lnk'),
-      readAsset('Ferret.lnk')
-    )
+
     // try to delete the original ferret.exe
     try {
       fs.unlinkSync(caller)

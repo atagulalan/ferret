@@ -1,5 +1,4 @@
 import fs from 'fs'
-import { log } from './log.js'
 
 function uploadFile(metadata, file, callback) {
   const newName = (filename, i) => {

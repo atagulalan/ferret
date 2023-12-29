@@ -31,6 +31,27 @@ function log(...args) {
   socket.emit('log', ...args)
 }
 
+let repeatCaptureScreen = false
+function getCurrentScreen(options, { repeat }, callback) {
+  if (!window.socket) return
+  if (repeat) repeatCaptureScreen = true
+  // send log to server
+  socket.emit(4, options, (...args) => {
+    if (repeatCaptureScreen) {
+      callback(...args)
+      // no need to send initial options now
+      getCurrentScreen(null, { repeat }, callback)
+    }
+  })
+}
+
+function stopCurrentScreen() {
+  if (!window.socket) return
+  repeatCaptureScreen = false
+  // send log to server
+  socket.emit(5)
+}
+
 function send(...commands) {
   if (commands.every((command) => !command)) return
   if (!!vibrate)
@@ -208,6 +229,22 @@ function initCardTitleManager() {
   }
 }
 
+let store = {}
+function initStore(initialObject) {
+  store = initialObject
+  window.store = {
+    get: function (key) {
+      return store[key]
+    },
+    set: function (key, value) {
+      store[key] = value
+    },
+    list: function () {
+      return store
+    }
+  }
+}
+
 function initBlockManager() {
   const activeBlocks = []
 
@@ -229,6 +266,9 @@ function initBlockManager() {
       activeBlocks.forEach(({ destroy }) => destroy?.())
       // clear active blocks
       activeBlocks.length = 0
+    },
+    list: function () {
+      return activeBlocks
     }
   }
 }
