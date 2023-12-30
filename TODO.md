@@ -25,6 +25,7 @@
 - [ ] Tray Reload IPs Option
 - [ ] Upload Module Settings
 - [ ] Open upload directory to right click menu
+- [ ] Uninstall option
 
 ## Abandoned
 
